@@ -28,6 +28,7 @@ contradictory
 contrary
 corrosive
 corrupt
+couldn't
 crazy
 creepy
 criminal
@@ -44,6 +45,7 @@ deformed
 deny
 despicable
 detrimental
+didn't
 dirty
 disease
 disgusting
@@ -82,6 +84,7 @@ hard
 hard-hearted
 harmful
 hate
+haven't
 hideous
 homely
 horrendous
@@ -167,6 +170,7 @@ scream
 severe
 shoddy
 shocking
+shouldn't
 sick
 sickening
 sinister
@@ -216,6 +220,7 @@ wary
 weary
 wicked
 woeful
+won't
 worthless
 wound
 yell
