@@ -20,12 +20,9 @@ big-headed
 bitchy
 boastful
 boring
-<<<<<<< HEAD
 bossy
-=======
 burn
 burned
->>>>>>> origin/master
 broken
 callous
 can't
@@ -56,11 +53,8 @@ cynical
 damage
 damaging
 dastardly
-<<<<<<< HEAD
 deceitful
-=======
 deformed
->>>>>>> origin/master
 deplorable
 depressed
 deprived
@@ -140,7 +134,7 @@ inane
 inconsiderate
 inconsistent
 indecisive
-indescreet
+indiscreet
 inelegant
 infernal
 inflexible
@@ -204,7 +198,6 @@ quirky
 quit
 reject
 renege
-repellant
 reptilian
 repulsive
 repugnant
