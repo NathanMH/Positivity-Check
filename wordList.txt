@@ -20,7 +20,12 @@ big-headed
 bitchy
 boastful
 boring
+<<<<<<< HEAD
 bossy
+=======
+burn
+burned
+>>>>>>> origin/master
 broken
 callous
 can't
@@ -51,14 +56,18 @@ cynical
 damage
 damaging
 dastardly
+<<<<<<< HEAD
 deceitful
+=======
+deformed
+>>>>>>> origin/master
 deplorable
 depressed
 deprived
-deformed
 deny
 despicable
 detrimental
+devil
 didn't
 dirty
 disapproval
@@ -147,6 +156,8 @@ lazy
 lose
 lousy
 lumpy
+mad
+maddening
 malicious
 mean
 menacing
@@ -164,7 +175,6 @@ naughty
 negate
 negative
 never
-no
 nobody
 nondescript
 nonsense
