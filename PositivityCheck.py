@@ -11,6 +11,7 @@ Index:
 3. Setup using supplied files and user input
 4. General Functions
 5. Main
+6. Testing
 ####################"""
 #######################
 
@@ -105,22 +106,27 @@ def calcPercentIdioms(idioms, totSentences):
 # 5. MAIN
 ###################################################################
 
-print()
 # Individual words
 negWordCount = getNegativeWordCount(negWords, userWords)
-print("Total words in file: " + str(len(userWords)))
-print("Total negative words in file: ", negWordCount)
 percentNegative = calcPercentNegWords(negWordCount, userWords)
-print("This file is composed of ", percentNegative, "% negative words.")
 
 # Idioms
 sentenceNumber = getSentenceCount(userFile)
-print("Total sentences in file:", sentenceNumber)
 idiomCount = getIdiomCount(idiomList, userFile)
-print("Total idioms used:", idiomCount)
 percentIdiom = calcPercentIdioms(idiomCount, sentenceNumber)
-print("This file is composed of ", percentIdiom, "% idioms")
+
+###################################################################
+# 6. TESTING
+###################################################################
 
 print()
 
-###################################################################
+print("Total words in file: " + str(len(userWords)))
+print("Total negative words in file: ", negWordCount)
+print("This file is composed of ", percentNegative, "% negative words.")
+
+print("Total sentences in file:", sentenceNumber)
+print("Total idioms used:", idiomCount)
+print("This file is composed of ", percentIdiom, "% idioms")
+
+print()

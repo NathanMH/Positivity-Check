@@ -1,0 +1,28 @@
+TODO:
+
+######################################
+# DATA
+######################################
+
+- Curate a portfolio of text to determine averages and medians
+- Analyze specific example texts
+
+######################################
+# MARKETING
+######################################
+
+- The newest SpellCheck
+- Web App or standalone?
+- Research effects of positivity
+
+######################################
+# FEATURES
+######################################
+
+- Hooks for which programs
+    - Checks positivity while you type?
+    - ex. Microsoft Word, Outlook, Chrome/Firefox Extensions
+- Breakdown of negative words and idioms
+- Recommend simple fixes for added positivity
+- Progress Bar / Timer
+- 
