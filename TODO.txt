@@ -25,4 +25,6 @@ TODO:
 - Breakdown of negative words and idioms
 - Recommend simple fixes for added positivity
 - Progress Bar / Timer
-- 
+
+- Categories
+    - Tech, Music, Media, Finance

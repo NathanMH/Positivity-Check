@@ -20,8 +20,6 @@ Index:
 ###################################################################
 
 import math
-# Get regex for finding idioms
-import re
 
 ###################################################################
 # 2. INITIALIZATION FUNCTIONS
@@ -48,7 +46,7 @@ def makeIdiomArray(list):
 # Make an array of words out of the user provided file
 def makeUserWordsArray(file):
     userWordsArray = []
-    for lines in file:
+    for lines in open(file, "r"):
         for word in lines.split(" "):
             userWordsArray.append(word.lower())
     return userWordsArray
