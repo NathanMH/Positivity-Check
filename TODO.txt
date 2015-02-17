@@ -25,6 +25,11 @@ TODO:
 - Breakdown of negative words and idioms
 - Recommend simple fixes for added positivity
 - Progress Bar / Timer
+- Average Positivity vs. Median vs. UserInput
 
 - Categories
     - Tech, Music, Media, Finance
+    - Analysis tailored to the genre
+- Site-Wide analysis
+    - ex. Times.com, Forbs
+- Picture to text to analysis
