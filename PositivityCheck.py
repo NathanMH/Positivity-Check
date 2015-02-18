@@ -6,12 +6,12 @@ Title: PositivityCheck
 #######################
 """####################
 Index:
-1. Imports and Readme
-2. Initialization Functions 
-3. Setup using supplied files and user input
-4. General Functions
-5. Main
-6. Testing
+    1. Imports and Readme
+    2. Initialization Functions 
+    3. Setup using supplied files and user input
+    4. General Functions
+    5. Main
+    6. Testing
 ####################"""
 #######################
 
