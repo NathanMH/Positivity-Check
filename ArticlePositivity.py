@@ -21,6 +21,8 @@ Index:
 ###################################################################
 
 import newspaper
+from bs4 import BeautifulSoup
+import urllib
 
 ###################################################################
 # 2. INITIALIZATION FUNCTIONS
@@ -28,11 +30,14 @@ import newspaper
 
 sources = ["http://www.nytimes.com/services/xml/rss/index.html", "http://feeds.gawker.com/lifehacker/full", "http://feeds.feedburner.com/techcrunch", "http://www.cbc.ca/cmlink/rss-arts", "http://www.cbc.ca/cmlink/rss-world", "http://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml", "http://www.npr.org/rss/rss.php?id=1008", "http://feeds.reuters.com/news/artsculture"]
 
-def makeLinksArray(sources):
-    return
+# Step one, Loop through each 'source'
+def getArticleLinks(sources):
+    for site in sources:
+        print(site)
+        soup = BeautifulSoup(urllib.request.urlopen(site))
+        links = soup.find_all('a')
+    return links 
 
-def getArticlesFromList(items):
-    return
 
 
 ###################################################################
@@ -57,6 +62,8 @@ def getArticlesFromList(items):
 # 6. TESTING
 ###################################################################
 
-print(sources[2])
+currentLinks = getArticleLinks(sources)
+
+os.system("PositivityCheck.py")
 
 ###################################################################
