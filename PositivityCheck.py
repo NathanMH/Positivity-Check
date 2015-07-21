@@ -62,6 +62,7 @@ userFilename = getFilenameFromUser()
 negWords = makeNegativeWordsArray(negativeWordsDoc)
 idiomList = makeIdiomArray(idiomListDoc)
 userWords = makeUserWordsArray(userFilename)
+userNegWords = []
 
 ###################################################################
 # 4. GENERAL FUNCTIONS
@@ -75,6 +76,7 @@ def getNegativeWordCount(negWordList, userWordsArray):
         for userWord in userWords:
             if negativeWord == userWord:
                 negativeWordCounter += 1
+                userNegWords.append(negativeWord)
     return negativeWordCounter
 
 def calcPercentNegWords(negNum, totNum):
@@ -98,6 +100,14 @@ def getIdiomCount(idiomArray, doc):
 def calcPercentIdioms(idioms, totSentences):
     perc = idioms / totSentences
     return math.ceil(perc)
+
+def showNegWords():
+    q = input("Would you like to see the negative words in this text?").lower()
+    if q == "yes" or q == "y":
+        for word in userNegWords:
+            print(word)
+    else:
+        print("Goodbye!")
 
 ###################################################################
 # 5. MAIN
@@ -126,4 +136,6 @@ print("Total sentences in file:", sentenceNumber)
 print("Total idioms used:", idiomCount)
 print("This file is composed of ", percentIdiom, "% idioms")
 
+print()
+showNegWords()
 print()

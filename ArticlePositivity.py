@@ -23,6 +23,7 @@ Index:
 import newspaper
 from bs4 import BeautifulSoup
 import urllib
+import os # Comment this out to stop program from running
 
 ###################################################################
 # 2. INITIALIZATION FUNCTIONS
@@ -32,11 +33,15 @@ sources = ["http://www.nytimes.com/services/xml/rss/index.html", "http://feeds.g
 
 # Step one, Loop through each 'source'
 def getArticleLinks(sources):
+    links = []
     for site in sources:
         print(site)
         soup = BeautifulSoup(urllib.request.urlopen(site))
-        links = soup.find_all('a')
+        links.append(soup.find_all('a'))
+    print()
     return links 
+
+def getLinksFromLifehacker(rssSource):
 
 
 
@@ -62,8 +67,8 @@ def getArticleLinks(sources):
 # 6. TESTING
 ###################################################################
 
-currentLinks = getArticleLinks(sources)
+# currentLinks = getArticleLinks(sources)
 
-os.system("PositivityCheck.py")
+# os.system("PositivityCheck.py")
 
 ###################################################################
