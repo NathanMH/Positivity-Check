@@ -42,7 +42,15 @@ def getArticleLinks(sources):
     return links 
 
 def getLinksFromLifehacker(rssSource):
+    print(sources[1])
+    soup = BeautifulSoup(urllib.request.urlopen(sources[1]))
+    #print(soup.prettify())
+    
+    #titles = soup.find_all("title")
 
+    articles = soup.find_all("link")
+    for i in articles:
+        print(i)
 
 
 ###################################################################
@@ -66,6 +74,8 @@ def getLinksFromLifehacker(rssSource):
 ###################################################################
 # 6. TESTING
 ###################################################################
+
+getLinksFromLifehacker(sources)
 
 # currentLinks = getArticleLinks(sources)
 
