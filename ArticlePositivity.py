@@ -20,38 +20,38 @@ Index:
 # 1. IMPORTS AND README
 ###################################################################
 
-import newspaper
+from newspaper import Article
 from bs4 import BeautifulSoup
 import urllib
-import os # Comment this out to stop program from running
+import os 
+import sys, io # Needed for proper encoding for windows powershell("cp437")
 
 ###################################################################
 # 2. INITIALIZATION FUNCTIONS
 ###################################################################
 
-sources = ["http://www.nytimes.com/services/xml/rss/index.html", "http://feeds.gawker.com/lifehacker/full", "http://feeds.feedburner.com/techcrunch", "http://www.cbc.ca/cmlink/rss-arts", "http://www.cbc.ca/cmlink/rss-world", "http://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml", "http://www.npr.org/rss/rss.php?id=1008", "http://feeds.reuters.com/news/artsculture"]
+sources = ["http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml", "http://feeds.gawker.com/lifehacker/full", "http://feeds.feedburner.com/techcrunch", "http://www.cbc.ca/cmlink/rss-arts", "http://www.cbc.ca/cmlink/rss-world", "http://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml", "http://www.npr.org/rss/rss.php?id=1008", "http://feeds.reuters.com/news/artsculture"]
 
-# Step one, Loop through each 'source'
-def getArticleLinks(sources):
-    links = []
-    for site in sources:
-        print(site)
-        soup = BeautifulSoup(urllib.request.urlopen(site))
-        links.append(soup.find_all('a'))
-    print()
-    return links 
+links = []
 
-def getLinksFromLifehacker(rssSource):
-    print(sources[1])
-    soup = BeautifulSoup(urllib.request.urlopen(sources[1]))
-    #print(soup.prettify())
-    
-    #titles = soup.find_all("title")
+# Get the links from LifeHacker RSS 
+def getLinks(rssSources):
+    for site in rssSources:
+        # Open RSS feed in xml format
+        soup = BeautifulSoup(urllib.request.urlopen(site), 'xml')
+        # Get the links into string format and place into list
+        for i in soup.find_all('link')[3:]:
+            if i.string != None:
+                links.append(i.string)
 
-    articles = soup.find_all("link")
-    for i in articles:
-        print(i)
+    return links
 
+def getArticleContent(url):
+    content = Article(url)
+    content.download()
+    content.parse()
+
+    print(content.text)
 
 ###################################################################
 # 3. SETUP WITH SUPPLIED FILES
@@ -75,9 +75,12 @@ def getLinksFromLifehacker(rssSource):
 # 6. TESTING
 ###################################################################
 
-getLinksFromLifehacker(sources)
+getLinks(sources)
 
-# currentLinks = getArticleLinks(sources)
+testURL = "http://www.nytimes.com/2015/07/24/world/middleeast/irans-president-defends-nuclear-deal-in-blunt-remarks.html"
+
+getArticleContent(testURL)
+
 
 # os.system("PositivityCheck.py")
 
