@@ -25,6 +25,7 @@ from bs4 import BeautifulSoup
 import urllib
 import os 
 import sys, io # Needed for proper encoding for windows powershell("cp437")
+import string
 
 ###################################################################
 # 2. INITIALIZATION FUNCTIONS
@@ -47,11 +48,12 @@ def getLinks(rssSources):
     return links
 
 def getArticleContent(url):
-    content = Article(url)
+    content = Article(url, fetch_images=False)
     content.download()
     content.parse()
 
-    print(content.text)
+    articleString = content.text.encode('utf-8')
+    print(articleString)
 
 ###################################################################
 # 3. SETUP WITH SUPPLIED FILES
