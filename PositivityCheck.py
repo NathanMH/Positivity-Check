@@ -8,7 +8,7 @@ Title: PositivityCheck
 Index:
     1. Imports and Readme
     2. Initialization Functions 
-    3. Setup using supplied files and user input
+    3. Setup using supplied files and content input
     4. General Functions
     5. Main
     6. Testing
@@ -20,15 +20,21 @@ Index:
 ###################################################################
 
 import math
+import ArticlePositivity
 
 ###################################################################
 # 2. INITIALIZATION FUNCTIONS
 ###################################################################
 
-# Get filee from the user
+# Get file from the user - for future builds
 def getFilenameFromUser():
     userFile = input("Which file would you like to analyze?: ")
     return userFile
+
+def getContentFromRSS():
+    ArticlePositivity.getLinks(ArticlePositivity.sources)
+    content = ArticlePositivity.getArticleContent(ArticlePositivity.links[1])
+    return content
 
 # Make the array of negative words
 def makeNegativeWordsArray(negWordList):
@@ -43,13 +49,14 @@ def makeIdiomArray(idiomList):
         idiomArray.append(line.rstrip('\n'))
     return idiomArray
 
-# Make an array of words out of the user provided file
-def makeUserWordsArray(usrFile):
-    userWordsArray = []
-    for lines in open(usrFile, 'r'):
-        for word in lines.split(" "):
-            userWordsArray.append(word.lower())
-    return userWordsArray
+# Make an array of words out of the content provided
+def makeContentWordsArray(content):
+    contentWordsArray = []
+
+    for word in content.split():
+        contentWordsArray.append(word.lower())
+
+    return contentWordsArray
 
 ###################################################################
 # 3. SETUP WITH FILES
@@ -57,26 +64,26 @@ def makeUserWordsArray(usrFile):
 
 negativeWordsDoc = open("wordList.txt", "r")
 idiomListDoc = open("idiomList.txt", "r")
-userFilename = getFilenameFromUser()
 
 negWords = makeNegativeWordsArray(negativeWordsDoc)
 idiomList = makeIdiomArray(idiomListDoc)
-userWords = makeUserWordsArray(userFilename)
-userNegWords = []
+
+content = getContentFromRSS()
+contentWords = makeContentWordsArray(content)
+contentNegWords = []
 
 ###################################################################
 # 4. GENERAL FUNCTIONS
 ###################################################################
 
-
-# Go through each negative word and check if it matches any in the user file word list
-def getNegativeWordCount(negWordList, userWordsArray):
+# Go through each negative word and check if it matches any in the content word list
+def getNegativeWordCount(negWordList, contentWordsArray):
     negativeWordCounter = 0
     for negativeWord in negWords:
-        for userWord in userWords:
-            if negativeWord == userWord:
+        for contentWord in contentWords:
+            if negativeWord == contentWord:
                 negativeWordCounter += 1
-                userNegWords.append(negativeWord)
+                contentNegWords.append(negativeWord)
     return negativeWordCounter
 
 def calcPercentNegWords(negNum, totNum):
@@ -104,7 +111,7 @@ def calcPercentIdioms(idioms, totSentences):
 def showNegWords():
     q = input("Would you like to see the negative words in this text?").lower()
     if q == "yes" or q == "y":
-        for word in userNegWords:
+        for word in contentNegWords:
             print(word)
     else:
         print("Goodbye!")
@@ -114,13 +121,13 @@ def showNegWords():
 ###################################################################
 
 # Individual words
-negWordCount = getNegativeWordCount(negWords, userWords)
-percentNegative = calcPercentNegWords(negWordCount, userWords)
+negWordCount = getNegativeWordCount(negWords, contentWords)
+percentNegative = calcPercentNegWords(negWordCount, contentWords)
 
 # Idioms
-sentenceNumber = getSentenceCount(userFilename)
-idiomCount = getIdiomCount(idiomList, userFilename)
-percentIdiom = calcPercentIdioms(idiomCount, sentenceNumber)
+# sentenceNumber = getSentenceCount(content)
+# idiomCount = getIdiomCount(idiomList, content)
+# percentIdiom = calcPercentIdioms(idiomCount, sentenceNumber)
 
 ###################################################################
 # 6. TESTING
@@ -128,7 +135,7 @@ percentIdiom = calcPercentIdioms(idiomCount, sentenceNumber)
 
 print()
 
-print("Total words in file: " + str(len(userWords)))
+print("Total words in file: " + str(len(contentWords)))
 print("Total negative words in file: ", negWordCount)
 print("This file is composed of ", percentNegative, "% negative words.")
 

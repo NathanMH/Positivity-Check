@@ -51,9 +51,10 @@ def getArticleContent(url):
     content = Article(url, fetch_images=False)
     content.download()
     content.parse()
-
     articleString = content.text.encode('utf-8')
+
     print(articleString)
+    return articleString
 
 ###################################################################
 # 3. SETUP WITH SUPPLIED FILES
@@ -77,13 +78,12 @@ def getArticleContent(url):
 # 6. TESTING
 ###################################################################
 
+'''
 getLinks(sources)
 
-testURL = "http://www.nytimes.com/2015/07/24/world/middleeast/irans-president-defends-nuclear-deal-in-blunt-remarks.html"
+print(links[1])
 
-getArticleContent(testURL)
-
-
-# os.system("PositivityCheck.py")
+testContent = getArticleContent(links[1])
+'''
 
 ###################################################################
