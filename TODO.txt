@@ -4,6 +4,7 @@ TODO:
 # URGENT
 ######################################
 
+- Rewrite as object oriented. Article/Comment objects etc...
 
 ######################################
 # DATA
@@ -11,6 +12,7 @@ TODO:
 
 - Curate a portfolio of text to determine averages and medians
 - Analyze specific example texts
+    - eg. Comments, Articles, Emails
 
 ######################################
 # MARKETING
@@ -27,6 +29,7 @@ TODO:
 - Hooks for which programs
     - Checks positivity while you type?
     - ex. Microsoft Word, Outlook, Chrome/Firefox Extensions
+        - Reddit/Comment system
 - Breakdown of negative words and idioms
 - Recommend simple fixes for added positivity
 - Progress Bar / Timer
