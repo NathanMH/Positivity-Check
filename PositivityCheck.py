@@ -21,65 +21,36 @@ Index:
 
 import math
 import ArticlePositivity
+import checkr
 
 ###################################################################
 # 2. INITIALIZATION FUNCTIONS
 ###################################################################
 
 # Get file from the user - for future builds
-def getFilenameFromUser():
+def return_filename():
     userFile = input("Which file would you like to analyze?: ")
     return userFile
 
-def getContentFromRSS():
-    ArticlePositivity.getLinks(ArticlePositivity.sources)
-    content = ArticlePositivity.getArticleContent(ArticlePositivity.links[1])
-    return content
-
-# Make the array of negative words
-def makeNegativeWordsArray(negWordList):
-    negativeWordsArray = []
-    for word in negWordList:
-        negativeWordsArray.append(word.rstrip('\n'))
-    return negativeWordsArray
-
-def makeIdiomArray(idiomList):
-    idiomArray = []
-    for line in idiomList:
-        idiomArray.append(line.rstrip('\n'))
-    return idiomArray
-
 # Make an array of words out of the content provided
-def makeContentWordsArray(content):
-    contentWordsArray = []
-
+def content_words_array(content):
+    content_words_array = []
     for word in content.split():
-        contentWordsArray.append(word.lower())
-
+        content_words_array.append(word.lower())
     return contentWordsArray
 
 ###################################################################
 # 3. SETUP WITH FILES
 ###################################################################
 
-negativeWordsDoc = open("wordList.txt", "r")
-idiomListDoc = open("idiomList.txt", "r")
-
-negWords = makeNegativeWordsArray(negativeWordsDoc)
-idiomList = makeIdiomArray(idiomListDoc)
-
-content = getContentFromRSS()
-contentWords = makeContentWordsArray(content)
-contentNegWords = []
-
 ###################################################################
 # 4. GENERAL FUNCTIONS
 ###################################################################
 
 # Go through each negative word and check if it matches any in the content word list
-def getNegativeWordCount(negWordList, contentWordsArray):
-    negativeWordCounter = 0
-    for negativeWord in negWords:
+def negative_word_count(afinn_list, content_words):
+    counter = 0
+    for word in :
         for contentWord in contentWords:
             if negativeWord == contentWord:
                 negativeWordCounter += 1
