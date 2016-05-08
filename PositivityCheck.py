@@ -3,117 +3,98 @@ Author: Nathan Mador-House
 Title: PositivityCheck
 ####################"""
 
-#######################
 """####################
 Index:
     1. Imports and Readme
-    2. Initialization Functions 
-    3. Setup using supplied files and content input
-    4. General Functions
-    5. Main
-    6. Testing
+    2. Functions 
+    3. Main
+    4. Testing
 ####################"""
-#######################
+
 
 ###################################################################
 # 1. IMPORTS AND README
 ###################################################################
 
 import math
-import ArticlePositivity
-import checkr
+import string
 
 ###################################################################
-# 2. INITIALIZATION FUNCTIONS
+# 2. CLASSES & FUNCTIONS
 ###################################################################
 
-# Get file from the user - for future builds
-def return_filename():
-    userFile = input("Which file would you like to analyze?: ")
-    return userFile
+# Setup a dictionary with AFINN
+afinn_file = 'AFINN-111.txt'
+afinn = {}
+with open(afinn_file) as f:
+    for line in f:
+        new_string = " ".join(line.split())
+        # *rest is incase there are more than two arguments per line
+        (w, s, *rest) = new_string.split()
+        afinn[w] = s
 
-# Make an array of words out of the content provided
-def content_words_array(content):
-    content_words_array = []
-    for word in content.split():
-        content_words_array.append(word.lower())
-    return contentWordsArray
+class text_block:
+    def __init__(self, text):
+        # Set up variables
+        self.text = "".join(l for l in text if l not in string.punctuation)
+        self.word_list = self.text.split()
+        self.word_total = len(self.word_list)
+        self.neg_count = 0
+        self.pos_count = 0 
+        self.neg_total = 0
+        self.pos_total = 0
+        self.neutral_count = 0
+        self.percent_neg = 0
+        self.percent_pos = 0
+        self.percent_neutral = 0
+        self.sentiment = 0
 
-###################################################################
-# 3. SETUP WITH FILES
-###################################################################
+        # Run functions
+        self.word_sort()
+        self.eval_percentages()
+        self.eval_sentiment()
+        
+    def word_sort(self):
+        word_values = map(lambda word: afinn.get(word, 0) , self.word_list)
+        for val in word_values:
+            if int(val) < 0:
+                self.neg_count += 1
+                self.neg_total += int(val)
+            elif int(val) > 0:
+                self.pos_count += 1
+                self.pos_total += int(val)
+            else:
+                self.neutral_count += 1
 
-###################################################################
-# 4. GENERAL FUNCTIONS
-###################################################################
+    def eval_percentages(self):
+        self.percent_neg = round((self.neg_count / self.word_total) * 100, 2)
+        self.percent_pos = round((self.pos_count / self.word_total) * 100, 2)
+        self.percent_neutral = round((self.neutral_count / self.word_total) * 100, 2)
 
-# Go through each negative word and check if it matches any in the content word list
-def negative_word_count(afinn_list, content_words):
-    counter = 0
-    for word in :
-        for contentWord in contentWords:
-            if negativeWord == contentWord:
-                negativeWordCounter += 1
-                contentNegWords.append(negativeWord)
-    return negativeWordCounter
-
-def calcPercentNegWords(negNum, totNum):
-    perc = negNum / len(totNum)
-    return math.ceil(perc)
-
-def getSentenceCount(doc):
-    periods = open(doc).read().count(".")
-    exclamPoints = open(doc).read().count("!")
-    questMarks = open(doc).read().count("?")
-    sentenceCounter = periods + exclamPoints + questMarks
-    return sentenceCounter
-
-def getIdiomCount(idiomArray, doc):
-    idiomCounter = 0
-    for idiom in idiomArray:
-        if idiom in open(doc).read():
-            idiomCounter += 1
-    return idiomCounter
-
-def calcPercentIdioms(idioms, totSentences):
-    perc = idioms / totSentences
-    return math.ceil(perc)
-
-def showNegWords():
-    q = input("Would you like to see the negative words in this text?").lower()
-    if q == "yes" or q == "y":
-        for word in contentNegWords:
-            print(word)
-    else:
-        print("Goodbye!")
-
-###################################################################
-# 5. MAIN
-###################################################################
-
-# Individual words
-negWordCount = getNegativeWordCount(negWords, contentWords)
-percentNegative = calcPercentNegWords(negWordCount, contentWords)
-
-# Idioms
-# sentenceNumber = getSentenceCount(content)
-# idiomCount = getIdiomCount(idiomList, content)
-# percentIdiom = calcPercentIdioms(idiomCount, sentenceNumber)
+    def eval_sentiment(self):
+        self.sentiment = round((self.neg_total + self.pos_total) / math.sqrt(self.word_total), 3)
+        
+    def print_stats(self):
+        print("Total words: " + str(self.word_total))
+        print("Negative words: " + str(self.neg_count))
+        print("Negative sum: " + str(self.neg_total))
+        print("Positive words: " + str(self.pos_count))
+        print("Positive sum: " + str(self.pos_total))
+        print("Percent Negative: " + str(self.percent_neg))
+        print("Percent Positive: " + str(self.percent_pos))
+        print("Normalized Sentiments: " + str(self.sentiment))
 
 ###################################################################
-# 6. TESTING
+# 3. MAIN
 ###################################################################
 
-print()
+###################################################################
+# 4. TESTING
+###################################################################
 
-print("Total words in file: " + str(len(contentWords)))
-print("Total negative words in file: ", negWordCount)
-print("This file is composed of ", percentNegative, "% negative words.")
+test_text = "Hello this is some sample text. It has some positive text as well as negative. This is to test if the program fucking works. It has a lot of great words like; love, adore, best, beautiful."
+test_obj = text_block(test_text)
 
-print("Total sentences in file:", sentenceNumber)
-print("Total idioms used:", idiomCount)
-print("This file is composed of ", percentIdiom, "% idioms")
+test_obj.print_stats()
 
-print()
-showNegWords()
-print()
+
