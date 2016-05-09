@@ -80,8 +80,8 @@ class text_block:
         print("Negative sum: " + str(self.neg_total))
         print("Positive words: " + str(self.pos_count))
         print("Positive sum: " + str(self.pos_total))
-        print("Percent Negative: " + str(self.percent_neg))
-        print("Percent Positive: " + str(self.percent_pos))
+        print("Percent Negative Words: " + str(self.percent_neg))
+        print("Percent Positive Words: " + str(self.percent_pos))
         print("Normalized Sentiments: " + str(self.sentiment))
 
 ###################################################################
