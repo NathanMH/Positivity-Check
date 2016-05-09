@@ -1,6 +1,6 @@
 """####################
 Author: Nathan Mador-House
-Title: PositivityCheck
+Title: Positively Twitter 
 ####################"""
 
 """####################
@@ -16,11 +16,34 @@ Index:
 # 1. IMPORTS AND README
 ###################################################################
 
-import checkr
+import PositivityCheck
+import tweepy
+import authentication
 
 ###################################################################
 # 2. FUNCTIONS
 ###################################################################
+
+consumer_key = authentication.consumer_key
+consumer_secret = authentication.consumer_secret
+access_token = authentication.access_token
+access_token_secret = authentication.access_secret
+
+def authen():
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+
+    public_tweets = api.home_timeline()
+    for tweet in public_tweets:
+        print()
+        # print(dir(tweet))
+        print(tweet.user.name + " : " + tweet.text)
+        print()
+
+
+def tweet_positivity(tweet):
+    text = PositivityCheck.text_block
 
 ###################################################################
 # 1. MAIN
@@ -30,7 +53,7 @@ import checkr
 # 1. TESTING
 ###################################################################
 
-text = "Hello this is some sample text. It has some positive text as well as negative. This is to test if the program fucking works. It has a lot of great words like; love, adore, best, beautiful."
-test = checkr.text_block(text)
-print(test.print_stats())
+authen()
+
+
 

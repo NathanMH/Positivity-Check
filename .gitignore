@@ -45,3 +45,5 @@ Temporary Items
 .apdisk
 
 AFINN-111.txt
+authentication.py
+__pycache__/authentication.cpython-34.pyc
