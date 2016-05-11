@@ -33,7 +33,10 @@ def authen():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
+    return api
 
+def get_tweets():
+    # Change this to be use_timeline
     public_tweets = api.home_timeline(None, None, 1, None)
     for tweet in public_tweets:
         # print(dir(tweet))
@@ -48,15 +51,21 @@ def tweet_positivity(tweet):
 # 1. MAIN
 ###################################################################
 
+api = authen()
+
+def __main__(name):
+    pass
+
+
 ###################################################################
 # 1. TESTING
 ###################################################################
 
-#test_tweet = authen()
 real_test_tweet = "RT @ott_ecodistrict: La famille Germain w @JimWatsonOttawa at the opening of a great, green hotel in the EcoDistrict @cmckenney https://t.c…"
- 
 
-print(real_test_tweet)
+print(get_tweets())
+
+#print(real_test_tweet)
 tweet_positivity(real_test_tweet)
 
 
