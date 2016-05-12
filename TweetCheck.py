@@ -35,17 +35,34 @@ def authen():
     api = tweepy.API(auth)
     return api
 
-def get_tweets():
-    # Change this to be use_timeline
+class tweeter(user_id):
+    def __init__(self):
+        self.tweets = []
+        self.data = {"tweet_len": [], "neg_count": [],
+                     "neg_total": [], "pos_count"; [],
+                     "pos_total": [], "neutral_count": [],}
+        self.analysis = {"most_positive": 0, "most_negative": 0, "average": 0}
+
+        self.get_user_tweets()
+        self.analyze_tweets()
+
+    def get_user_tweets(self):
+        user_tweets = api.user_timeline(user_id)
+        for tweet in user_tweets:
+           self.tweets.append(tweet.text)
+
+    def analyze_tweets(self):
+        for tweet in self.tweets:
+            tweet_object = PositivityCheck.text_block(tweet)
+            tweet_object.print_stats()
+
+def get_home_tweets():
+    # Change this to be user_timeline
     public_tweets = api.home_timeline(None, None, 1, None)
     for tweet in public_tweets:
         # print(dir(tweet))
         # print(tweet.user.name + " : " + tweet.text)
         return tweet.text
-
-def tweet_positivity(tweet):
-    text = PositivityCheck.text_block(tweet)
-    text.print_stats()
 
 ###################################################################
 # 1. MAIN
