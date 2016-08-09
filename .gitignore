@@ -29,6 +29,7 @@ $RECYCLE.BIN/
 .AppleDouble
 .LSOverride
 .swp
+.py.swp
 
 # Thumbnails
 ._*

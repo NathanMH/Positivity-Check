@@ -6,7 +6,7 @@ Title: PositivityCheck
 """####################
 Index:
     1. Imports and Readme
-    2. Functions 
+    2. Functions
     3. Main
     4. Testing
 ####################"""
@@ -24,7 +24,7 @@ import string
 ###################################################################
 
 # Setup a dictionary with AFINN
-afinn_file = 'AFINN-111.txt'
+afinn_file = 'resources/AFINN-111.txt'
 afinn = {}
 with open(afinn_file) as f:
     for line in f:
@@ -33,6 +33,7 @@ with open(afinn_file) as f:
         (w, s, *rest) = new_string.split()
         afinn[w] = s
 
+
 class text_block:
     def __init__(self, text):
         # Set up variables
@@ -40,7 +41,7 @@ class text_block:
         self.word_list = self.text.split()
         self.word_total = len(self.word_list)
         self.neg_count = 0
-        self.pos_count = 0 
+        self.pos_count = 0
         self.neg_total = 0
         self.pos_total = 0
         self.neutral_count = 0
@@ -53,9 +54,9 @@ class text_block:
         self.word_sort()
         self.eval_percentages()
         self.eval_sentiment()
-        
+
     def word_sort(self):
-        word_values = map(lambda word: afinn.get(word, 0) , self.word_list)
+        word_values = map(lambda word: afinn.get(word, 0), self.word_list)
         for val in word_values:
             if int(val) < 0:
                 self.neg_count += 1
@@ -73,7 +74,7 @@ class text_block:
 
     def eval_sentiment(self):
         self.sentiment = round((self.neg_total + self.pos_total) / math.sqrt(self.word_total), 3)
-        
+
     def print_stats(self):
         print("Total words: " + str(self.word_total))
         print("Negative words: " + str(self.neg_count))

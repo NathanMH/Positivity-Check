@@ -1,12 +1,12 @@
 """####################
 Author: Nathan Mador-House
-Title: Positively Twitter 
+Title: Positively Twitter
 ####################"""
 
 """####################
 Index:
     1. Imports and Readme
-    2. Functions 
+    2. Functions
     3. Main
     4. Testing
 ####################"""
@@ -29,24 +29,27 @@ consumer_secret = authentication.consumer_secret
 access_token = authentication.access_token
 access_token_secret = authentication.access_secret
 
+
 def authen():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
     return api
 
-class tweeter(user_id):
-    tweet_text_objects = []
-    def __init__(self):
-        self.tweets_text = []
 
+class tweeter():
+    tweet_text_objects = []
+
+    def __init__(self):
+        self.user_id = 'NorthernlionL'
+        self.tweets_text = []
         self.get_user_tweets()
         self.analyze_tweets()
 
     def get_user_tweets(self):
-        user_tweets = api.user_timeline(user_id)
+        user_tweets = api.user_timeline(self.user_id)
         for tweet in user_tweets:
-           self.tweets_text.append(tweet.text)
+            self.tweets_text.append(tweet.text)
 
     # Creates the tweet objects from just the text
     def analyze_tweets(self):
@@ -54,6 +57,7 @@ class tweeter(user_id):
             tweet_object = PositivityCheck.text_block(tweet)
             tweet_text_objects.append(tweet_object)
             tweet_object.print_stats()
+
 
 def get_home_tweets():
     # Change this to be user_timeline
@@ -69,6 +73,7 @@ def get_home_tweets():
 
 api = authen()
 
+
 def __main__(name):
     pass
 
@@ -77,12 +82,12 @@ def __main__(name):
 # 1. TESTING
 ###################################################################
 
-real_test_tweet = "RT @ott_ecodistrict: La famille Germain w @JimWatsonOttawa at the opening of a great, green hotel in the EcoDistrict @cmckenney https://t.c…"
+real_test_tweet = "@JimWatsonOttawa test tweet!"
 
-print(get_tweets())
+#print(get_tweets())
 
-#print(real_test_tweet)
-tweet_positivity(real_test_tweet)
-
+print(real_test_tweet)
+tweet_check = PositivityCheck.text_block(real_test_tweet)
+tweet_check.print_stats()
 
 
