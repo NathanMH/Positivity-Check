@@ -51,6 +51,11 @@ class tweeter:
             self.tweets.append(tweet.text)
 
 
+def store_tweets(tweeter, filename):
+    for tweet in tweeter.tweets:
+        py_to_file.text_to_file(tweet, filename)
+
+
 def analyze_tweets(tweeter):  # Creates the tweet objects from just the text
     # Changing this to not take a tweeter object, just takes text
     tweet_text_objects = []
