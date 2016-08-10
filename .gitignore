@@ -46,6 +46,6 @@ Temporary Items
 
 AFINN-111.txt
 authentication.py
-__pycache__/authentication.cpython-34.pyc
+*.pyc
 py_to_file.py
 *.swp
