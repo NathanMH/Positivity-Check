@@ -37,26 +37,29 @@ def authen():
     return api
 
 
-class tweeter():
-    tweet_text_objects = []
+class tweeter:
 
-    def __init__(self):
-        self.user_id = 'NorthernlionL'
-        self.tweets_text = []
+    def __init__(self, user_id):
+        self.user_id = user_id
+        self.tweets = []
+        self.tweet_text_objects = []
         self.get_user_tweets()
         self.analyze_tweets()
 
     def get_user_tweets(self):
-        user_tweets = api.user_timeline(self.user_id)
+        user_tweets = api.user_timeline(self.user_id, None, None, None, None, 700)
         for tweet in user_tweets:
-            self.tweets_text.append(tweet.text)
+            self.tweets.append(tweet.text)
 
     # Creates the tweet objects from just the text
     def analyze_tweets(self):
+        print(len(self.tweets))
         for tweet in self.tweets:
             tweet_object = PositivityCheck.text_block(tweet)
-            tweet_text_objects.append(tweet_object)
-            tweet_object.print_stats()
+            self.tweet_text_objects.append(tweet_object)
+            #print(tweet)
+            #tweet_object.print_stats()
+            print(tweet_object.sentiment)
 
 
 def get_home_tweets():
@@ -82,12 +85,10 @@ def __main__(name):
 # 1. TESTING
 ###################################################################
 
-real_test_tweet = "@JimWatsonOttawa test tweet!"
+# real_test_tweet = "@JimWatsonOttawa test tweet!"
+# print(real_test_tweet)
 
-#print(get_tweets())
-
-print(real_test_tweet)
-tweet_check = PositivityCheck.text_block(real_test_tweet)
-tweet_check.print_stats()
+# test = tweeter('NorthernlionLP')
+test2 = tweeter('realDonaldTrump')
 
 
