@@ -56,6 +56,13 @@ def store_tweets(tweeter, filename):
         py_to_file.text_to_file(tweet, filename)
 
 
+def get_stored_tweets(filename):
+    tweets_list = []
+    with open(filename, 'r') as text_file:
+        tweets_list.append(text_file.readline())
+    return tweets_list
+
+
 def analyze_tweets(tweeter):  # Creates the tweet objects from just the text
     # Changing this to not take a tweeter object, just takes text
     tweet_text_objects = []
@@ -95,8 +102,10 @@ def __main__(name):
 
 # test = tweeter('NorthernlionLP')
 test2 = tweeter('realDonaldTrump')
+store_tweets(test2, 'test.txt')
+get_tweets('test.txt')
 
 # Testing the text to and from a file
-py_to_file.text_to_file(test2.tweets, 'written_file.txt')
-py_to_file.file_to_text()
+#py_to_file.text_to_file(test2.tweets, 'written_file.txt')
+#py_to_file.file_to_text()
 
