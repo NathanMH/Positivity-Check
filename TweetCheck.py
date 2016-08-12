@@ -43,28 +43,22 @@ class tweeter:
     def __init__(self, user_id):
         self.user_id = user_id
         self.tweets = []
-        self.get_user_tweets()
+        self.tweets_file = user_id + '.txt'
 
     def get_user_tweets(self):
         user_tweets = api.user_timeline(self.user_id, None, None, None, None, 7)
         for tweet in user_tweets:
             self.tweets.append(tweet.text)
 
+    def store_tweets(self):
+        for tweet in self.tweets:
+            py_to_file.text_to_file(tweet, self.tweets_file)
 
-def store_tweets(tweeter, filename):
-    for tweet in tweeter.tweets:
-        py_to_file.text_to_file(tweet, filename)
-
-
-def get_stored_tweets(filename):
-    tweets_list = []
-    with open(filename, 'r') as text_file:
-        tweets_list.append(text_file.readline())
-    return tweets_list
+    def get_stored_tweets(self):
+        self.tweets = py_to_file.file_to_text(self.tweets_file)
 
 
-def analyze_tweets(tweeter):  # Creates the tweet objects from just the text
-    # Changing this to not take a tweeter object, just takes text
+def analyze_tweets(tweeter):
     tweet_text_objects = []
     for tweet in tweeter.tweets:
         tweet_object = PositivityCheck.text_block(tweet)
@@ -102,10 +96,12 @@ def __main__(name):
 
 # test = tweeter('NorthernlionLP')
 test2 = tweeter('realDonaldTrump')
-store_tweets(test2, 'test.txt')
-get_tweets('test.txt')
+test2.get_user_tweets()
+test2.store_tweets()
+test2.get_stored_tweets()
+print("Setup complete.")
 
-# Testing the text to and from a file
-#py_to_file.text_to_file(test2.tweets, 'written_file.txt')
-#py_to_file.file_to_text()
+for i in test2.tweets:
+    print(i)
+
 
