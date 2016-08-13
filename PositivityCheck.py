@@ -93,8 +93,4 @@ class text_block:
 # 4. TESTING
 ###################################################################
 
-# test_text = "Hello this is some sample text. It has some positive text as well as negative. This is to test if the program fucking works. It has a lot of great words like; love, adore, best, beautiful."
-# test_obj = text_block(test_text)
-# test_obj.print_stats()
-
 
