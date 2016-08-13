@@ -20,6 +20,7 @@ import PositivityCheck
 import tweepy
 import authentication
 import py_to_file
+import os
 
 ###################################################################
 # 2. FUNCTIONS
@@ -45,10 +46,13 @@ class tweeter:
         self.tweets = []
         self.tweets_file = user_id + '.txt'
 
-    def get_user_tweets(self):
-        user_tweets = api.user_timeline(self.user_id, None, None, None, None, 7)
-        for tweet in user_tweets:
-            self.tweets.append(tweet.text)
+    def get_user_tweets(self, amount):
+        if os.path.isfile(self.tweets_file):
+            print('Already collected tweets, retrieving from storage.')
+        else:
+            user_tweets = api.user_timeline(self.user_id, None, None, None, None, amount)
+            for tweet in user_tweets:
+                self.tweets.append(tweet.text)
 
     def store_tweets(self):
         for tweet in self.tweets:
@@ -58,12 +62,13 @@ class tweeter:
         self.tweets = py_to_file.file_to_text(self.tweets_file)
 
 
-def analyze_tweets(tweeter):
+def analyze_tweets(tweets):
     tweet_text_objects = []
-    for tweet in tweeter.tweets:
+    for tweet in tweets:
         tweet_object = PositivityCheck.text_block(tweet)
         tweet_text_objects.append(tweet_object)
-        print(tweet)
+        print()
+        print(tweet.rstrip())
         tweet_object.print_stats()
         # print(tweet_object.sentiment)
 
@@ -91,17 +96,16 @@ def __main__(name):
 # 1. TESTING
 ###################################################################
 
-# real_test_tweet = "@JimWatsonOttawa test tweet!"
-# print(real_test_tweet)
-
-# test = tweeter('NorthernlionLP')
+test = tweeter('NorthernlionLP')
 test2 = tweeter('realDonaldTrump')
-test2.get_user_tweets()
+
+test2.get_user_tweets(5)
 test2.store_tweets()
 test2.get_stored_tweets()
 print("Setup complete.")
+analyze_tweets(test2.tweets)
+print("Analyzing Tweets")
 
-for i in test2.tweets:
-    print(i)
+
 
 
