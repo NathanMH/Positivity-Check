@@ -1,15 +1,15 @@
-"""####################
-Author: Nathan Mador-House
-Title: PositivityCheck
-####################"""
+####################
+# Author: Nathan Mador-House
+# Title: PositivityCheck
+####################
 
-"""####################
-Index:
-    1. Imports and Readme
-    2. Functions
-    3. Main
-    4. Testing
-####################"""
+####################
+# Index:
+#     1. Imports and Readme
+#     2. Functions
+#     3. Main
+#     4. Testing
+####################
 
 
 ###################################################################
@@ -24,15 +24,9 @@ import string
 ###################################################################
 
 # Setup a dictionary with AFINN
-afinn_file = 'resources/AFINN-111.txt'
-afinn = {}
-with open(afinn_file) as f:
-    for line in f:
-        new_string = " ".join(line.split())
-        # *rest is incase there are more than two arguments per line
-        (w, s, *rest) = new_string.split()
-        afinn[w] = s
+AFINN_FILE = '/home/musicnate/Documents/Positivity-Check/resources/AFINN-111.txt'
 
+AFINN = dict(line.split('\t') for line in open(AFINN_FILE))
 
 class text_block:
     def __init__(self, text):
@@ -56,7 +50,7 @@ class text_block:
         self.eval_sentiment()
 
     def word_sort(self):
-        word_values = map(lambda word: afinn.get(word, 0), self.word_list)
+        word_values = map(lambda word: AFINN.get(word, 0), self.word_list)
         for val in word_values:
             if int(val) < 0:
                 self.neg_count += 1

@@ -1,40 +1,41 @@
-"""####################
-Author: Nathan Mador-House
-Title: Positively Twitter
-####################"""
+####################
+# Author: Nathan Mador-House
+# Title: Positively Twitter
+####################
 
-"""####################
-Index:
-    1. Imports and Readme
-    2. Functions
-    3. Main
-    4. Testing
-####################"""
+####################
+# Index:
+#     1. Imports and Readme
+#     2. Functions
+#     3. Main
+#     4. Testing
+####################
 
 
 ###################################################################
 # 1. IMPORTS AND README
 ###################################################################
 
+import os
 import PositivityCheck
 import tweepy
+# Put sensitive keys and tokens into authentication.py file
 import authentication
 import py_to_file
-import os
 
 ###################################################################
 # 2. FUNCTIONS
 ###################################################################
 
-consumer_key = authentication.consumer_key
-consumer_secret = authentication.consumer_secret
-access_token = authentication.access_token
-access_token_secret = authentication.access_secret
+CONSUMER_KEY = authentication.consumer_key
+CONSUMER_SECRET = authentication.consumer_secret
+ACCESS_TOKEN = authentication.access_token
+ACCESS_TOKEN_SECRET = authentication.access_secret
 
 
 def authen():
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
+    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     api = tweepy.API(auth)
     return api
 
@@ -96,13 +97,12 @@ def __main__(name):
 # 1. TESTING
 ###################################################################
 
-test = tweeter('NorthernlionLP')
-test2 = tweeter('realDonaldTrump')
+TEST = tweeter('NorthernlionLP')
+TEST2 = tweeter('realDonaldTrump')
 
-test2.get_user_tweets(5)
-test2.store_tweets()
-test2.get_stored_tweets()
+TEST2.get_user_tweets(5)
+TEST2.store_tweets()
+TEST2.get_stored_tweets()
 print("Setup complete.")
-analyze_tweets(test2.tweets)
+analyze_tweets(TEST2.tweets)
 print("Analyzing Tweets")
-
