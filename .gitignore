@@ -49,4 +49,4 @@ authentication.py
 *.pyc
 py_to_file.py
 *.swp
-test.txt
+*.txt

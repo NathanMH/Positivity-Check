@@ -1,3 +1,4 @@
+#!/usr/bin/python3 
 ####################
 # Author: Nathan Mador-House
 # Title: Positively Twitter
@@ -53,7 +54,7 @@ class tweeter:
         else:
             user_tweets = api.user_timeline(self.user_id, None, None, None, None, amount)
             for tweet in user_tweets:
-                self.tweets.append(tweet.text)
+                self.tweets.append(tweet.text.replace('\n', ' '))
 
     def store_tweets(self):
         for tweet in self.tweets:
@@ -71,15 +72,12 @@ def analyze_tweets(tweets):
         print()
         print(tweet.rstrip())
         tweet_object.print_stats()
-        # print(tweet_object.sentiment)
 
 
 def get_home_tweets():
     # Change this to be user_timeline
     public_tweets = api.home_timeline(None, None, 1, None)
     for tweet in public_tweets:
-        # print(dir(tweet))
-        # print(tweet.user.name + " : " + tweet.text)
         return tweet.text
 
 ###################################################################
@@ -89,20 +87,17 @@ def get_home_tweets():
 api = authen()
 
 
-def __main__(name):
-    pass
+if __name__ == "__main__":
+    twit = tweeter(input("Twitter Username: "))
+    num_of_tweets = input("How many tweets to analyze?: ")
+    twit.get_user_tweets(num_of_tweets)
+    twit.store_tweets()
+    twit.get_stored_tweets()
+    print("Setup complete.")
+    analyze_tweets(twit.tweets)
+    print("Analyzing Tweets")
 
 
 ###################################################################
 # 1. TESTING
 ###################################################################
-
-TEST = tweeter('NorthernlionLP')
-TEST2 = tweeter('realDonaldTrump')
-
-TEST2.get_user_tweets(5)
-TEST2.store_tweets()
-TEST2.get_stored_tweets()
-print("Setup complete.")
-analyze_tweets(TEST2.tweets)
-print("Analyzing Tweets")

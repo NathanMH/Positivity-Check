@@ -18,13 +18,14 @@
 
 import math
 import string
+import os
 
 ###################################################################
 # 2. CLASSES & FUNCTIONS
 ###################################################################
 
 # Setup a dictionary with AFINN
-AFINN_FILE = '/home/musicnate/Documents/Positivity-Check/resources/AFINN-111.txt'
+AFINN_FILE = os.path.dirname(__file__) + '/resources/AFINN-111.txt'
 
 AFINN = dict(line.split('\t') for line in open(AFINN_FILE))
 
