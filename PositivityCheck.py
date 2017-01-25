@@ -63,12 +63,18 @@ class text_block:
                 self.neutral_count += 1
 
     def eval_percentages(self):
-        self.percent_neg = round((self.neg_count / self.word_total) * 100, 2)
-        self.percent_pos = round((self.pos_count / self.word_total) * 100, 2)
-        self.percent_neutral = round((self.neutral_count / self.word_total) * 100, 2)
+        try:
+            self.percent_neg = round((self.neg_count / self.word_total) * 100, 2)
+            self.percent_pos = round((self.pos_count / self.word_total) * 100, 2)
+            self.percent_neutral = round((self.neutral_count / self.word_total) * 100, 2)
+        except ZeroDivisionError:
+            pass
 
     def eval_sentiment(self):
-        self.sentiment = round((self.neg_total + self.pos_total) / math.sqrt(self.word_total), 3)
+        try:
+            self.sentiment = round((self.neg_total + self.pos_total) / math.sqrt(self.word_total), 3)
+        except ZeroDivisionError:
+            pass
 
     def print_stats(self):
         print("Total words: " + str(self.word_total))
