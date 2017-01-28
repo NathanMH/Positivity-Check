@@ -62,6 +62,10 @@ class UserText:
         self.neg_total, self.pos_total = (0, 0, 0, 0, 0, 0, 0, 0)
         self.sentiment = 0
 
+        # User generated word lists
+        self.neg_word_list = []
+        self.pos_word_list = []
+
         # Run functions
         self.find_matching_words()
         self.get_word_vals()
@@ -80,10 +84,12 @@ class UserText:
             val = self.afinn.afinn_dict[word]
             if int(val) < 0:
                 self.neg_count += 1
-                self.neg_total += int()
+                self.neg_total += int(val)
+                self.neg_word_list.append(word)
             elif int(val) > 0:
                 self.pos_count += 1
                 self.pos_total += int(val)
+                self.pos_word_list.append(word)
             else:
                 self.neutral_count += 1
 
@@ -115,6 +121,13 @@ class UserText:
         print("Percent Positive Words: " + str(self.percent_pos))
         print("Normalized Sentiments: " + str(self.sentiment))
 
+    def print_word_lists(self):
+        """ Print the entirety of the user generated word lists """
+        print("Positive Words Used:")
+        print(self.pos_word_list)
+        print("Negative Words Used:")
+        print(self.neg_word_list)
+
 ###################################################################
 # 3. MAIN
 ###################################################################
@@ -122,6 +135,7 @@ class UserText:
 if __name__ == "__main__":
     POS_CHECK_OBJ = UserText(input("Text for analysis: "))
     POS_CHECK_OBJ.print_stats()
+    POS_CHECK_OBJ.print_word_lists()
 
 ###################################################################
 # 4. TESTING
