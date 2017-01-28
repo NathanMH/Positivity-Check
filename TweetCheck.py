@@ -37,9 +37,7 @@ ACCESS_TOKEN_SECRET = authentication.access_secret
 
 
 def authen():
-    """
-    Authentication for Twitter
-    """
+    """ Authentication for Twitter. """
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     api = tweepy.API(auth)
@@ -47,10 +45,8 @@ def authen():
 
 
 class Tweeter:
-    """
-    This module is for analyzing tweets from specifi users. It uses the PositivityCheck
-    module to to sentiment analysis, currently using the AFINN list of words.
-    """
+    """ This module is for analyzing tweets from specifi users. It uses the PositivityCheck
+    module to to sentiment analysis, currently using the AFINN list of words. """
 
     def __init__(self, user_id):
         self.user_id = user_id
@@ -58,9 +54,7 @@ class Tweeter:
         self.tweets_file = user_id + '.txt'
 
     def get_user_tweets(self, amount):
-        """
-        Retrieve tweets from the user specified
-        """
+        """ Retrieve tweets from the user specified. """
         if os.path.isfile(self.tweets_file):
             print('Already collected tweets, retrieving from storage.')
         else:
@@ -69,27 +63,21 @@ class Tweeter:
                 self.tweets.append(tweet.text.replace('\n', ' '))
 
     def store_tweets(self):
-        """
-        Store tweet text in a simple text file
-        TODO move to json format
-        """
+        """ Store tweet text in a simple text file. """
+        # TODO move to json format
         for tweet in self.tweets:
             py_to_file.text_to_file(tweet, self.tweets_file)
 
     def get_stored_tweets(self):
-        """
-        Retrieve tweet text from file
-        """
+        """ Retrieve tweet text from file. """
         self.tweets = py_to_file.file_to_text(self.tweets_file)
 
 
 def analyze_tweets(tweets):
-    """
-    Use PositivityCheck module to analyze tweets
-    """
+    """ Use PositivityCheck module to analyze tweets. """
     tweet_text_objects = []
     for tweet in tweets:
-        tweet_object = PositivityCheck.text_block(tweet)
+        tweet_object = PositivityCheck.UserText(tweet)
         tweet_text_objects.append(tweet_object)
         print()
         print(tweet.rstrip())
@@ -97,10 +85,8 @@ def analyze_tweets(tweets):
 
 
 def get_home_tweets(user):
-    """
-    Retrieve tweets from the user home timeline
-    TODO make user functional
-    """
+    """ Retrieve tweets from the user home timeline. """
+    # TODO make user functional
     # Change this to be user_timeline
     public_tweets = API.home_timeline(None, None, 1, None)
     for tweet in public_tweets:
