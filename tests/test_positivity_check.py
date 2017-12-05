@@ -34,6 +34,9 @@ class TestPositivityCheck(unittest.TestCase):
         test_object = PositivityCheck.UserText("Sweet")
         self.assertGreater(test_object.pos_count, 0)
 
+    def test_afinn_file(self):
+        self.assertDictEqual()
+
     def test_set_creation(self):
         """ Test if the set function is functioning. """
         pass

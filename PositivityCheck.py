@@ -18,6 +18,8 @@
 import math
 import string
 import os
+import urllib.request
+import shutil
 
 ###################################################################
 # 2. CLASSES & FUNCTIONS
@@ -28,17 +30,20 @@ class Afinn:
     def __init__(self):
         self.afinn_dict = {}
         self.afinn_set = set()
-
-        #
         self.setup_afinn_structs()
 
     def setup_afinn_structs(self):
         """ Create a set and dictionary of the afinn word list. """
         try:
-            afinn_file = os.path.dirname(__file__) + '/resources/AFINN-111.txt'
+            afinn_file = os.path.dirname(os.path.abspath(__file__)) + '/resources/AFINN-en-165.txt'
             self.afinn_dict = dict(line.split('\t') for line in open(afinn_file))
         except FileNotFoundError:
-            afinn_file = os.path.dirname(__file__) + 'resources/AFINN-111.txt'
+            afinn_url = "https://raw.githubusercontent.com/fnielsen/afinn/master/afinn/data/AFINN-en-165.txt"
+            loc = os.path.dirname(os.path.abspath(__file__)) + '/resources/AFINN-en-165.txt'
+            with urllib.request.urlopen(afinn_url) as response, open (loc, 'wb') as out_file:
+                shutil.copyfileobj(response, out_file)
+
+            afinn_file = os.path.dirname(os.path.abspath(__file__)) + '/resources/AFINN-en-165.txt'
             self.afinn_dict = dict(line.split('\t') for line in open(afinn_file))
 
         #  Setup a dictionary with words as keys and integers for values.
@@ -57,8 +62,8 @@ class UserText:
         # Word counts, totals and percents set to 0
         self.matching_word_list = []
         self.neg_count, self.pos_count, self.neutral_count, \
-        self.percent_neg, percent_pos, self.percent_neutral, \
-        self.neg_total, self.pos_total = (0, 0, 0, 0, 0, 0, 0, 0)
+            self.percent_neg, percent_pos, self.percent_neutral, \
+            self.neg_total, self.pos_total = (0, 0, 0, 0, 0, 0, 0, 0)
         self.sentiment = 0
 
         # User generated word lists
