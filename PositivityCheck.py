@@ -20,6 +20,7 @@ import string
 import os
 import urllib.request
 import shutil
+import re
 
 ###################################################################
 # 2. CLASSES & FUNCTIONS
@@ -55,8 +56,7 @@ class UserText:
     """ An object of the text that the user provides. """
     def __init__(self, text):
         self.afinn = Afinn()
-        self.text = "".join(l for l in text if l not in string.punctuation)
-        self.word_list = [x.lower() for x in self.text.split()]
+        self.word_list = re.split(r"\W+", text, re.UNICODE)
         self.word_total = len(self.word_list)
 
         # Word counts, totals and percents set to 0
