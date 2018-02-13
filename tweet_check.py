@@ -12,16 +12,13 @@
 #     4. Testing
 ####################
 
-
 ###################################################################
 # 1. IMPORTS AND README
 ###################################################################
 
 import os
-
 import tweepy
 import py_to_file
-
 import PositivityCheck
 # Put sensitive keys and tokens into authentication.py file
 import authentication
