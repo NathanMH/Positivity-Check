@@ -45,9 +45,12 @@ Temporary Items
 .apdisk
 
 AFINN-111.txt
+AFINN-en-165.txt
 authentication.py
 *.pyc
 py_to_file.py
 *.swp
 *.txt
 tags
+the-office-lines-scripts.csv
+lines.html

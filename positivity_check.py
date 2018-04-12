@@ -56,13 +56,13 @@ class UserText:
     """ An object of the text that the user provides. """
     def __init__(self, text):
         self.afinn = Afinn()
-        self.word_list = re.split(r"\W+", text, re.UNICODE)
+        self.word_list = re.split(r"\W+", text)
         self.word_total = len(self.word_list)
 
         # Word counts, totals and percents set to 0
         self.matching_word_list = []
         self.neg_count, self.pos_count, self.neutral_count, \
-            self.percent_neg, percent_pos, self.percent_neutral, \
+            self.percent_neg, self.percent_pos, self.percent_neutral, \
             self.neg_total, self.pos_total = (0, 0, 0, 0, 0, 0, 0, 0)
         self.sentiment = 0
 
@@ -81,6 +81,8 @@ class UserText:
         for word in self.word_list:
             if word in self.afinn.afinn_set:
                 self.matching_word_list.append(word)
+            else:
+                self.neutral_count += 1
 
     def get_word_vals(self):
         """ Find the associate values of the words and add them to the totals. """
@@ -90,12 +92,10 @@ class UserText:
                 self.neg_count += 1
                 self.neg_total += int(val)
                 self.neg_word_list.append(word)
-            elif int(val) > 0:
+            else:
                 self.pos_count += 1
                 self.pos_total += int(val)
                 self.pos_word_list.append(word)
-            else:
-                self.neutral_count += 1
 
     def eval_percentages(self):
         """ Calculate the percentages of words. """
@@ -121,8 +121,10 @@ class UserText:
         print("Negative sum: " + str(self.neg_total))
         print("Positive words: " + str(self.pos_count))
         print("Positive sum: " + str(self.pos_total))
+        print("Neutral words: " + str(self.neutral_count))
         print("Percent Negative Words: " + str(self.percent_neg))
         print("Percent Positive Words: " + str(self.percent_pos))
+        print("Percent Neutral Words: " + str(self.percent_neutral))
         print("Normalized Sentiments: " + str(self.sentiment))
 
     def print_word_lists(self):
