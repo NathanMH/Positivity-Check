@@ -25,6 +25,11 @@ import positive_graph
 ###################################################################
 # 2. FUNCTIONS
 ###################################################################
+
+main_characters = ["Michael", "Jim", "Pam", "Dwight", "Ryan", "Andy", "Robert"]
+recurring_characters = ["Jan", "Roy", "Stanley", "Kevin", "Meredith", "Angela", "Oscar", "Phyllis", "Kelly", "Toby", "Creed", "Gabe", "Holly", "Nellie", "Clark", "Pete", "Erin"]
+other_characters = ["Todd", "David", "Karen", "Charles", "Jo", "Deangelo", "Val", "Cathy"]
+
 characters = {}
 seasons = {}
 episodes = {}
@@ -146,12 +151,30 @@ def analyze_csv(reader):
             episodes[epi_season].add_text(line)
             
         # Scene - TODO
-        
 
 def remove_stage_directions_and_punctuation(text):
     without_directions = re.sub("[\(\[].*?[\)\]]", "", text)
     result = re.sub('[^A-Za-z0-9 ]+', '', without_directions)
     return result
+
+def graph_seasons():
+    seasons_analysis = {}
+    for s in seasons:
+        sentiment = positivity_check.UserText(seasons[s].total_text)
+        seasons_analysis[seasons[s].season] = sentiment
+    positive_graph.make_seasons_graph(seasons_analysis)
+
+def graph_characters():
+    characters_analysis = {}
+    main_characters = ["Michael", "Jim", "Pam", "Dwight", "Ryan", "Andy", "Robert"]
+    recurring_characters = ["Jan", "Roy", "Stanley", "Kevin", "Meredith", "Angela", "Oscar", "Phyllis", "Kelly", "Toby", "Creed", "Gabe", "Holly", "Nellie", "Clark", "Pete", "Erin"]
+    other_characters = ["Todd", "David", "Karen", "Charles", "Jo", "Deangelo", "Val", "Cathy"]
+
+    for c in main_characters:
+        sentiment = positivity_check.UserText(characters[c].total_text)
+        characters_analysis[characters[c].name] = sentiment
+    positive_graph.make_characters_graph(characters_analysis)
+
 
 ###################################################################
 # 3. MAIN
@@ -159,31 +182,19 @@ def remove_stage_directions_and_punctuation(text):
 
 if __name__ == "__main__":
 
-    main_characters = ["Michael", "Jim", "Pam", "Dwight", "Ryan", "Andy", "Robert"]
-    recurring_characters = ["Jan", "Roy", "Stanley", "Kevin", "Meredith", "Angela", "Oscar", "Phyllis", "Kelly", "Toby", "Creed", "Gabe", "Holly", "Nellie", "Clark", "Pete", "Erin"] # What about Kellly #2?
-    other_characters = ["Todd", "David", "Karen", "Charles", "Jo", "Deangelo", "Val", "Cathy"]
 
     load_csv()
+    for char in characters:
+        print(characters[char].name)
 
-    characters_analysis = {}
-    seasons_analysis = {}
+    # graph_characters()
+    # graph_seasons()
 
-    # Characters
-    # for c in recurring_characters:
-    #     sentiment = positivity_check.UserText(characters[c].total_text)
-    #     character_analysis[characters[c].name] = sentiment
-    # positive_graph.make_characters_graph(characters_analysis)
 
     # most_positive = max(sentiments.items(), key=operator.itemgetter(1))[0]
     # most_negative = min(sentiments.items(), key=operator.itemgetter(1))[0]
     # print("Most Positive = " + most_positive + " : " + str(sentiments[most_positive]))
     # print("Most Negative = " + most_negative + " : " + str(sentiments[most_negative]))
-
-    # Season
-    for s in seasons:
-        sentiment = positivity_check.UserText(seasons[s].total_text)
-        seasons_analysis[seasons[s].season] = sentiment
-    positive_graph.make_seasons_graph(seasons_analysis)
 
 
     # Episodes

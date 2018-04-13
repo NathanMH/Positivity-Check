@@ -8,15 +8,15 @@ def make_characters_graph(characters):
     # output to static HTML file
     output_file("tests/lines.html")
     # create a new plot with a title and axis labels
-    p = figure(title="The Office Positivity Analysis", x_axis_label='Characters', y_axis_label='Positivity')
+    labels = ["Michael", "Jim", "Pam", "Dwight", "Ryan", "Andy", "Robert"]
+    p = figure(title="The Office Positivity Analysis", x_axis_label='Characters', y_axis_label='Positivity', x_range=labels)
 
-    x = 1
+    x = 0.33
     for char in characters:
-        p.vbar(x, width = 0.3, bottom = 0, top = characters[char].percent_pos, fill_color = "green")
-        x += 0.3
-        p.vbar(x, width = 0.3, bottom = 0, top = characters[char].percent_neg, fill_color = "red")
-        x += 1
-    # show the results
+        p.vbar(x, width = 0.33, bottom = 0, top = characters[char].percent_pos, fill_color = "green")
+        x += 0.33
+        p.vbar(x, width = 0.33, bottom = 0, top = characters[char].percent_neg, fill_color = "red")
+        x += 0.5
     show(p)
 
 def make_seasons_graph(seasons):
