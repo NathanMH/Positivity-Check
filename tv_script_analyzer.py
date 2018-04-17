@@ -35,6 +35,7 @@ seasons = {}
 episodes = {}
 scenes = {}
 
+# TODO Interface for common methods?
 class Character:
     def __init__(self, name, season, episode):
         self.name = name
