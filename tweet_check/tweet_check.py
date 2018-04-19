@@ -56,15 +56,23 @@ class Tweeter:
         if os.path.isfile(self.tweets_filename):
             print('Already collected tweets, retrieving from storage.')
         else:
-            user_tweets = API.user_timeline(self.user_id, None, None, None, None, amount)
-            for tweet in user_tweets:
-                self.tweets.append(tweet.text.replace('\n', ' '))
+            try:
+                user_tweets = API.user_timeline(self.user_id, None, None, None, None, amount)
+                for tweet in user_tweets:
+                    self.tweets.append(tweet.text.replace('\n', ' '))
+            except tweepy.error.TweepError as e:
+                print(e)
 
-    def store_tweets(self):
+    # TODO add location parameter (optional)
+    def store_tweets(self, loc=None):
         """ Store tweet text in a simple text file. """
         # TODO move to json format
-        for tweet in self.tweets:
-            text_to_file(tweet, self.tweets_filename)
+        if loc == 12:
+            for tweet in self.tweets:
+                text_to_file(tweet, self.tweets_filename)
+        else:
+            for tweet in self.tweets:
+                text_to_file(tweet, loc + "\\" + self.tweets_filename)
 
     def get_stored_tweets(self):
         """ Retrieve tweet text from file. """

@@ -1,4 +1,5 @@
 import unittest
+import os
 from tweet_check.tweet_check import Tweeter
 
 class TestTweetCheck(unittest.TestCase):
@@ -20,17 +21,25 @@ class TestTweetCheck(unittest.TestCase):
         """ Test get_user_tweets with a string? """
         twat = Tweeter("TestTwat")
         twat.get_user_tweets("five")
+        self.assertGreater(len(twat.tweets), 0)
 
     def test_get_user_tweets_float(self):
         """ Test get_user_tweets with a string? """
         twat = Tweeter("TestTwat")
         twat.get_user_tweets(0.381)
-        print(twat.tweets)
+        self.assertGreater(len(twat.tweets), 0)
 
     def test_nonexistant_twat(self):
         """ Test when username provided doesn't exit. """
-        twat = Tweeter("TestTwat29103")
-        print(type(twat))
+        twat = Tweeter("TestTwat291sr03")
+        twat.get_user_tweets(1)
+
+    def test_tweet_saving(self):
+        """ Test saving the tweets to a file TODO Move to json """
+        twat = Tweeter("TestTwat")
+        twat.get_user_tweets(1)
+        twat.store_tweets(os.getcwd() + "\\test")
+        self.assertEqual(os.path.isfile(twat.tweets_filename), True)
 
 if __name__ == '__main__':
     pass
