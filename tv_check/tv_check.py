@@ -17,7 +17,7 @@
 # Use csv file of tv/movie scripts for sentiment analysis
 
 import csv
-import positivity_check
+from positivity_check.positivity_check import UserText
 import re
 import operator
 import positive_graph
@@ -88,10 +88,9 @@ class Scene:
     def __init__(self, scene):
         self.scene = scene
         self.total_text = ""
-
-def load_csv():
+def load_csv(loc):
     # Load csv and add one item to each dictionary so it's not empty
-    with open("resources/the-office-lines-scripts.csv") as csvfile:
+    with open(loc) as csvfile:
         csvfile.readline()
         reader = csv.reader(csvfile, delimiter=',')
 
@@ -161,7 +160,7 @@ def remove_stage_directions_and_punctuation(text):
 def graph_seasons():
     seasons_analysis = {}
     for s in seasons:
-        sentiment = positivity_check.UserText(seasons[s].total_text)
+        sentiment = UserText(seasons[s].total_text)
         seasons_analysis[seasons[s].season] = sentiment
     positive_graph.make_seasons_graph(seasons_analysis)
 
@@ -172,7 +171,7 @@ def graph_characters():
     other_characters = ["Todd", "David", "Karen", "Charles", "Jo", "Deangelo", "Val", "Cathy"]
 
     for c in main_characters:
-        sentiment = positivity_check.UserText(characters[c].total_text)
+        sentiment = UserText(characters[c].total_text)
         characters_analysis[characters[c].name] = sentiment
     positive_graph.make_characters_graph(characters_analysis)
 
@@ -183,8 +182,8 @@ def graph_characters():
 
 if __name__ == "__main__":
 
-
-    load_csv()
+    real = "../resources/the-office-lines-scripts.csv"
+    load_csv(real)
     for char in characters:
         print(characters[char].name)
 
@@ -200,7 +199,7 @@ if __name__ == "__main__":
 
     # Episodes
     # for e in episodes:
-    #     sentiment = positivity_check.UserText(episodes[e].total_text)
+    #     sentiment = UserText(episodes[e].total_text)
     #     sentiments[episodes[e]] = sentiment.sentiment
 
     # most_positive = max(sentiments.items(), key=operator.itemgetter(1))[0]

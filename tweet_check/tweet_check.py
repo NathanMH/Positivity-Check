@@ -18,19 +18,20 @@
 
 import os
 import tweepy
-import py_to_file
-import PositivityCheck
+from resources.py_to_file import text_to_file
+from resources.py_to_file import file_to_text
+from positivity_check.positivity_check import UserText
 # Put sensitive keys and tokens into authentication.py file
-import authentication
-
+import resources.authentication as authentication
+# 
 ###################################################################
 # 2. FUNCTIONS
 ###################################################################
 
-CONSUMER_KEY = authentication.consumer_key
-CONSUMER_SECRET = authentication.consumer_secret
-ACCESS_TOKEN = authentication.access_token
-ACCESS_TOKEN_SECRET = authentication.access_secret
+CONSUMER_KEY = authentication.CONSUMER_KEY
+CONSUMER_SECRET = authentication.CONSUMER_SECRET
+ACCESS_TOKEN = authentication.ACCESS_KEY
+ACCESS_TOKEN_SECRET = authentication.ACCESS_SECRET
 
 
 def authen():
@@ -48,11 +49,11 @@ class Tweeter:
     def __init__(self, user_id):
         self.user_id = user_id
         self.tweets = []
-        self.tweets_file = user_id + '.txt'
+        self.tweets_filename = user_id + '.txt'
 
     def get_user_tweets(self, amount):
         """ Retrieve tweets from the user specified. """
-        if os.path.isfile(self.tweets_file):
+        if os.path.isfile(self.tweets_filename):
             print('Already collected tweets, retrieving from storage.')
         else:
             user_tweets = API.user_timeline(self.user_id, None, None, None, None, amount)
@@ -63,18 +64,18 @@ class Tweeter:
         """ Store tweet text in a simple text file. """
         # TODO move to json format
         for tweet in self.tweets:
-            py_to_file.text_to_file(tweet, self.tweets_file)
+            text_to_file(tweet, self.tweets_filename)
 
     def get_stored_tweets(self):
         """ Retrieve tweet text from file. """
-        self.tweets = py_to_file.file_to_text(self.tweets_file)
+        self.tweets = file_to_text(self.tweets_filename)
 
 
 def analyze_tweets(tweets):
     """ Use PositivityCheck module to analyze tweets. """
     tweet_text_objects = []
     for tweet in tweets:
-        tweet_object = PositivityCheck.UserText(tweet)
+        tweet_object = UserText(tweet)
         tweet_text_objects.append(tweet_object)
         print()
         print(tweet.rstrip())

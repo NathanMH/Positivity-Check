@@ -40,11 +40,11 @@ class Afinn:
             self.afinn_dict = dict(line.split('\t') for line in open(afinn_file))
         except FileNotFoundError:
             afinn_url = "https://raw.githubusercontent.com/fnielsen/afinn/master/afinn/data/AFINN-en-165.txt"
-            loc = os.path.dirname(os.path.abspath(__file__)) + '/resources/AFINN-en-165.txt'
-            with urllib.request.urlopen(afinn_url) as response, open (loc, 'wb') as out_file:
+            # afinn_file = os.path.dirname(os.path.abspath(__file__)) + '/resources/AFINN-en-165.txt' # Linux
+            afinn_file = os.getcwd() +  '\\resources\\AFINN-en-165.txt' # Windows
+            with urllib.request.urlopen(afinn_url) as response, open (afinn_file, 'wb') as out_file:
                 shutil.copyfileobj(response, out_file)
 
-            afinn_file = os.path.dirname(os.path.abspath(__file__)) + '/resources/AFINN-en-165.txt'
             self.afinn_dict = dict(line.split('\t') for line in open(afinn_file))
 
         #  Setup a dictionary with words as keys and integers for values.
@@ -56,7 +56,7 @@ class UserText:
     """ An object of the text that the user provides. """
     def __init__(self, text):
         self.afinn = Afinn()
-        self.word_list = re.split(r"\W+", text)
+        self.word_list = [word.lower() for word in re.split(r"\W+", text)]
         self.word_total = len(self.word_list)
 
         # Word counts, totals and percents set to 0
