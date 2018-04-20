@@ -12,7 +12,6 @@ class TestFuncs(unittest.TestCase):
     def test_load_csv(self):
         """ Test loading csv file """
         tv_check.load_csv(csv_test_loc)
-        self.assertEqual(type(), 0)
 
 class TestClasses(unittest.TestCase):
     """ Test classes """
