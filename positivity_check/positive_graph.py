@@ -1,3 +1,4 @@
+import os
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 
 # x is where the bar sits on the x-axis
@@ -6,7 +7,8 @@ from bokeh.plotting import figure, output_file, show, ColumnDataSource
 def make_characters_graph(characters):
 
     # output to static HTML file
-    output_file("tests/lines.html")
+    out_file = os.getcwd() + "\\positivity_check\\results\\lines.html"
+    output_file(out_file)
     # create a new plot with a title and axis labels
     labels = ["Michael", "Jim", "Pam", "Dwight", "Ryan", "Andy", "Robert"]
     p = figure(title="The Office Positivity Analysis", x_axis_label='Characters', y_axis_label='Positivity', x_range=labels)
@@ -48,7 +50,8 @@ def make_seasons_graph(seasons):
 if __name__ == "__main__":
 
     # output to static HTML file
-    output_file("tests/lines.html")
+    out_file = os.getcwd() + "\\positivity_check\\results\\lines.html"
+    output_file(out_file)
     # create a new plot with a title and axis labels
     p = figure(title="The Office Positivity Analysis", x_axis_label='Characters', y_axis_label='Positivity')
 

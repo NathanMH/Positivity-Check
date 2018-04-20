@@ -17,10 +17,13 @@
 # Use csv file of tv/movie scripts for sentiment analysis
 
 import csv
-from positivity_check.positivity_check import UserText
-import re
 import operator
-import positive_graph
+import os
+import re
+
+from positive_graph import make_characters_graph
+from positive_graph import make_seasons_graph
+from positivity_check import UserText
 
 ###################################################################
 # 2. FUNCTIONS
@@ -37,7 +40,7 @@ scenes = {}
 
 # TODO Interface for common methods?
 class Character:
-    def __init__(self, name, season, episode):
+    def __init__(self, name):
         self.name = name
         self.total_text = ""
         self.seasons = {}
@@ -88,6 +91,15 @@ class Scene:
     def __init__(self, scene):
         self.scene = scene
         self.total_text = ""
+
+    def add_text(self, line):
+        self.total_text += line + " "
+
+    def print_stats(self):
+        print("Scene: " + self.scene)
+        print(self.total_text)
+
+
 def load_csv(loc):
     # Load csv and add one item to each dictionary so it's not empty
     with open(loc) as csvfile:
@@ -102,7 +114,7 @@ def load_csv(loc):
         epi_season = str(row1[1] + format(int(row1[2]), '02d'))
 
         # Init dictionaries
-        characters[character] = Character(character, season, epi_season)
+        characters[character] = Character(character)
         characters[character].add_text(season, epi_season, line)
         seasons[season] = Season(season)
         seasons[season].add_text(line)
@@ -133,7 +145,7 @@ def analyze_csv(reader):
                 characters[character].episodes[epi_season] = Episode(epi_season)
                 characters[character].episodes[epi_season].add_text(line)
         else:
-            characters[character] = Character(character, season, epi_season)
+            characters[character] = Character(character)
             characters[character].add_text(season, epi_season, line)
 
         # Season
@@ -162,7 +174,7 @@ def graph_seasons():
     for s in seasons:
         sentiment = UserText(seasons[s].total_text)
         seasons_analysis[seasons[s].season] = sentiment
-    positive_graph.make_seasons_graph(seasons_analysis)
+    make_seasons_graph(seasons_analysis)
 
 def graph_characters():
     characters_analysis = {}
@@ -173,7 +185,7 @@ def graph_characters():
     for c in main_characters:
         sentiment = UserText(characters[c].total_text)
         characters_analysis[characters[c].name] = sentiment
-    positive_graph.make_characters_graph(characters_analysis)
+    make_characters_graph(characters_analysis)
 
 
 ###################################################################
@@ -182,12 +194,11 @@ def graph_characters():
 
 if __name__ == "__main__":
 
-    real = "../resources/the-office-lines-scripts.csv"
+    test = os.getcwd() + "\\positivity_check\\test\\the-office-lines-scripts-test.csv"
+    real = os.getcwd() + "\\positivity_check\\resources\\the-office-lines-scripts.csv"
     load_csv(real)
-    for char in characters:
-        print(characters[char].name)
 
-    # graph_characters()
+    graph_characters()
     # graph_seasons()
 
 

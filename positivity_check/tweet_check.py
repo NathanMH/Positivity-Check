@@ -20,10 +20,10 @@ import os
 import tweepy
 from resources.py_to_file import text_to_file
 from resources.py_to_file import file_to_text
-from positivity_check.positivity_check import UserText
+from positivity_check import UserText
 # Put sensitive keys and tokens into authentication.py file
 import resources.authentication as authentication
-# 
+
 ###################################################################
 # 2. FUNCTIONS
 ###################################################################
@@ -51,33 +51,46 @@ class Tweeter:
         self.tweets = []
         self.tweets_filename = user_id + '.txt'
 
-    def get_user_tweets(self, amount):
+    def get_user_tweets(self, amount, loc=None):
         """ Retrieve tweets from the user specified. """
-        if os.path.isfile(self.tweets_filename):
-            print('Already collected tweets, retrieving from storage.')
+        if loc == None:
+            if os.path.isfile(self.tweets_filename):
+                print('Already collected tweets, retrieving from storage.')
+            else:
+                try:
+                    user_tweets = API.user_timeline(self.user_id, None, None, None, None, amount)
+                    for tweet in user_tweets:
+                        self.tweets.append(tweet.text.replace('\n', ' '))
+                except tweepy.error.TweepError as e:
+                    print(e)
         else:
-            try:
-                user_tweets = API.user_timeline(self.user_id, None, None, None, None, amount)
-                for tweet in user_tweets:
-                    self.tweets.append(tweet.text.replace('\n', ' '))
-            except tweepy.error.TweepError as e:
-                print(e)
+            if os.path.isfile(loc + self.tweets_filename):
+                print('Already collected tweets, retrieving from storage.')
+            else:
+                try:
+                    user_tweets = API.user_timeline(self.user_id, None, None, None, None, amount)
+                    for tweet in user_tweets:
+                        self.tweets.append(tweet.text.replace('\n', ' '))
+                except tweepy.error.TweepError as e:
+                    print(e)
 
     # TODO add location parameter (optional)
     def store_tweets(self, loc=None):
         """ Store tweet text in a simple text file. """
         # TODO move to json format
-        if loc == 12:
+        if loc == None:
             for tweet in self.tweets:
                 text_to_file(tweet, self.tweets_filename)
         else:
             for tweet in self.tweets:
-                text_to_file(tweet, loc + "\\" + self.tweets_filename)
+                text_to_file(tweet, loc + self.tweets_filename)
 
-    def get_stored_tweets(self):
+    def get_stored_tweets(self, loc=None):
         """ Retrieve tweet text from file. """
-        self.tweets = file_to_text(self.tweets_filename)
-
+        if loc == None:
+            self.tweets = file_to_text(self.tweets_filename)
+        else:
+            self.tweets = file_to_text(loc + self.tweets_filename)
 
 def analyze_tweets(tweets):
     """ Use PositivityCheck module to analyze tweets. """
@@ -106,13 +119,14 @@ API = authen()
 
 
 if __name__ == "__main__":
+    temp_loc = os.getcwd() + "\\positivity_check\\results\\"
     USERNAME = "NorthernLionLP"
     NUM_OF_TWEETS = 5
 
     TWIT = Tweeter(USERNAME)
-    TWIT.get_user_tweets(NUM_OF_TWEETS)
-    TWIT.store_tweets()
-    TWIT.get_stored_tweets()
+    TWIT.get_user_tweets(NUM_OF_TWEETS, temp_loc)
+    TWIT.store_tweets(temp_loc)
+    TWIT.get_stored_tweets(temp_loc)
     analyze_tweets(TWIT.tweets)
 
 

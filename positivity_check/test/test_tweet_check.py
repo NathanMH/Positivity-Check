@@ -1,6 +1,8 @@
-import unittest
 import os
-from tweet_check.tweet_check import Tweeter
+import unittest
+
+from positivity_check.tweet_check import Tweeter
+
 
 class TestTweetCheck(unittest.TestCase):
     """ Test TweetCheck """
@@ -38,8 +40,8 @@ class TestTweetCheck(unittest.TestCase):
         """ Test saving the tweets to a file TODO Move to json """
         twat = Tweeter("TestTwat")
         twat.get_user_tweets(1)
-        twat.store_tweets(os.getcwd() + "\\test")
-        self.assertEqual(os.path.isfile(twat.tweets_filename), True)
+        twat.store_tweets(os.getcwd() + "\\test\\")
+        self.assertEqual(os.path.isfile(os.getcwd() + "\\test\\" + twat.tweets_filename), True)
 
 if __name__ == '__main__':
     pass
