@@ -23,6 +23,7 @@ import re
 
 from positive_graph import make_characters_graph
 from positive_graph import make_seasons_graph
+from positive_graph import make_episodes_graph
 from positivity_check import UserText
 
 ###################################################################
@@ -38,7 +39,16 @@ seasons = {}
 episodes = {}
 scenes = {}
 
-# TODO Interface for common methods?
+class Show:
+    def __init__(self):
+        self.total_text = ""
+
+    def add_text(self, line):
+        self.total_text += line + " "
+
+    def print_stats(self):
+        print(self.total_text)
+
 class Character:
     def __init__(self, name):
         self.name = name
@@ -59,46 +69,20 @@ class Character:
             self.episodes[episode] = Episode(episode)
             self.episodes[episode].add_text(line)
  
-    def print_stats(self):
-        print("Character: " + self.name)
-        print(self.total_text)
-
-class Season:
+class Season(Show):
     def __init__(self, season):
         self.season = season
         self.total_text = ""
 
-    def add_text(self, line):
-        self.total_text += line + " "
-    
-    def print_stats(self):
-        print("Season: " + self.season)
-        print(self.total_text)
-
-class Episode:
+class Episode(Show):
     def __init__(self, episode):
         self.episode = episode
         self.total_text = ""
 
-    def add_text(self, line):
-        self.total_text += line + " "
-
-    def print_stats(self):
-        print("Episode: " + self.episode)
-        print(self.total_text)
-
-class Scene:
+class Scene(Show):
     def __init__(self, scene):
         self.scene = scene
         self.total_text = ""
-
-    def add_text(self, line):
-        self.total_text += line + " "
-
-    def print_stats(self):
-        print("Scene: " + self.scene)
-        print(self.total_text)
-
 
 def load_csv(loc):
     # Load csv and add one item to each dictionary so it's not empty
@@ -176,6 +160,13 @@ def graph_seasons():
         seasons_analysis[seasons[s].season] = sentiment
     make_seasons_graph(seasons_analysis)
 
+def graph_episodes():
+    episodes_analysis = {}
+    for e in episodes:
+        sentiment = UserText(episodes[e].total_text)
+        episodes_analysis[episodes[e]] = sentiment
+    make_episodes_graph(episodes_analysis)
+
 def graph_characters():
     characters_analysis = {}
     main_characters = ["Michael", "Jim", "Pam", "Dwight", "Ryan", "Andy", "Robert"]
@@ -194,12 +185,25 @@ def graph_characters():
 
 if __name__ == "__main__":
 
-    test = os.getcwd() + "\\positivity_check\\test\\the-office-lines-scripts-test.csv"
-    real = os.getcwd() + "\\positivity_check\\resources\\the-office-lines-scripts.csv"
-    load_csv(real)
+    text = input("Test or Real: ").lower()
+    if text == "real" or text == "r":
+        office_file = os.getcwd() + "\\positivity_check\\resources\\the-office-lines-scripts.csv"
+    else:
+        office_file = os.getcwd() + "\\positivity_check\\test\\the-office-lines-scripts-test.csv"
+    
+    load_csv(office_file)
 
-    graph_characters()
-    # graph_seasons()
+    graph = input("What variable would you like to graph? Characters, Seasons, or Episodes: ").lower()
+
+    if graph == "characters" or graph == "c":
+        graph_characters()
+    elif graph == "seasons" or graph == "s":
+        graph_seasons()
+    elif graph == "episodes" or graph == "e":
+        graph_episodes()
+    else:
+        print("Sorry, didn't catch that.")
+
 
 
     # most_positive = max(sentiments.items(), key=operator.itemgetter(1))[0]
