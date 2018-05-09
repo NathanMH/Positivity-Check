@@ -1,4 +1,4 @@
-# import unittest
+import unittest
 import positivity_check
 
 class TestPositivityCheck(unittest.TestCase):

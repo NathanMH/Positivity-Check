@@ -69,6 +69,7 @@ class UserText:
         # User generated word lists
         self.neg_word_list = []
         self.pos_word_list = []
+        self.word_values_count = {-5:0, -4:0, -3:0, -2:0, -1:0, 0:0, 1:0, 2:0, 3:0, 4:0, 5:0}
 
         # Run functions
         self.find_matching_words()
@@ -86,8 +87,10 @@ class UserText:
 
     def get_word_vals(self):
         """ Find the associate values of the words and add them to the totals. """
+        self.word_values_count[0] = self.neutral_count
         for word in self.matching_word_list:
             val = self.afinn.afinn_dict[word]
+            self.word_values_count[int(val)] += 1
             if int(val) < 0:
                 self.neg_count += 1
                 self.neg_total += int(val)
@@ -122,6 +125,7 @@ class UserText:
         print("Positive words: " + str(self.pos_count))
         print("Positive sum: " + str(self.pos_total))
         print("Neutral words: " + str(self.neutral_count))
+        print("Word value count: " + str(self.word_values_count))
         print("Percent Negative Words: " + str(self.percent_neg))
         print("Percent Positive Words: " + str(self.percent_pos))
         print("Percent Neutral Words: " + str(self.percent_neutral))
@@ -146,5 +150,4 @@ if __name__ == "__main__":
 ###################################################################
 # 4. TESTING
 ###################################################################
-
 
