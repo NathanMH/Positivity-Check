@@ -26,8 +26,10 @@ import re
 # 2. CLASSES & FUNCTIONS
 ###################################################################
 
+
 class Afinn:
     """ A class to hold all of the afinn information. """
+
     def __init__(self):
         self.afinn_dict = {}
         self.afinn_set = set()
@@ -36,24 +38,31 @@ class Afinn:
     def setup_afinn_structs(self):
         """ Create a set and dictionary of the afinn word list. """
         try:
-            afinn_file = os.path.dirname(os.path.abspath(__file__)) + '/resources/AFINN-en-165.txt'
-            self.afinn_dict = dict(line.split('\t') for line in open(afinn_file))
+            afinn_file = (
+                os.path.dirname(os.path.abspath(__file__))
+                + "/resources/AFINN-en-165.txt"
+            )
+            self.afinn_dict = dict(line.split("\t") for line in open(afinn_file))
         except FileNotFoundError:
             afinn_url = "https://raw.githubusercontent.com/fnielsen/afinn/master/afinn/data/AFINN-en-165.txt"
             # afinn_file = os.path.dirname(os.path.abspath(__file__)) + '/resources/AFINN-en-165.txt' # Linux
-            afinn_file = os.getcwd() +  '\\resources\\AFINN-en-165.txt' # Windows
-            with urllib.request.urlopen(afinn_url) as response, open (afinn_file, 'wb') as out_file:
+            afinn_file = os.getcwd() + "\\resources\\AFINN-en-165.txt"  # Windows
+            with urllib.request.urlopen(afinn_url) as response, open(
+                afinn_file, "wb"
+            ) as out_file:
                 shutil.copyfileobj(response, out_file)
 
-            self.afinn_dict = dict(line.split('\t') for line in open(afinn_file))
+            self.afinn_dict = dict(line.split("\t") for line in open(afinn_file))
 
         #  Setup a dictionary with words as keys and integers for values.
         #  Setup a set of just the words from AFINN for quicker membership lookup.
         for word in self.afinn_dict:
             self.afinn_set.add(word)
 
+
 class UserText:
     """ An object of the text that the user provides. """
+
     def __init__(self, text):
         self.afinn = Afinn()
         self.word_list = [word.lower() for word in re.split(r"\W+", text)]
@@ -61,15 +70,34 @@ class UserText:
 
         # Word counts, totals and percents set to 0
         self.matching_word_list = []
-        self.neg_count, self.pos_count, self.neutral_count, \
-            self.percent_neg, self.percent_pos, self.percent_neutral, \
-            self.neg_total, self.pos_total = (0, 0, 0, 0, 0, 0, 0, 0)
+        self.neg_count, self.pos_count, self.neutral_count, self.percent_neg, self.percent_pos, self.percent_neutral, self.neg_total, self.pos_total = (
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+        )
         self.sentiment = 0
 
         # User generated word lists
         self.neg_word_list = []
         self.pos_word_list = []
-        self.word_values_count = {-5:0, -4:0, -3:0, -2:0, -1:0, 0:0, 1:0, 2:0, 3:0, 4:0, 5:0}
+        self.word_values_count = {
+            -5: 0,
+            -4: 0,
+            -3: 0,
+            -2: 0,
+            -1: 0,
+            0: 0,
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+        }
 
         # Run functions
         self.find_matching_words()
@@ -105,15 +133,18 @@ class UserText:
         try:
             self.percent_neg = round((self.neg_count / self.word_total) * 100, 2)
             self.percent_pos = round((self.pos_count / self.word_total) * 100, 2)
-            self.percent_neutral = round((self.neutral_count / self.word_total) * 100, 2)
+            self.percent_neutral = round(
+                (self.neutral_count / self.word_total) * 100, 2
+            )
         except ZeroDivisionError:
             print("Uh oh, there was some division by zero.")
 
     def eval_sentiment(self):
         """ Calculate the final sentiment number. """
         try:
-            self.sentiment = round((self.neg_total +
-                                    self.pos_total) / math.sqrt(self.word_total), 3)
+            self.sentiment = round(
+                (self.neg_total + self.pos_total) / math.sqrt(self.word_total), 3
+            )
         except ZeroDivisionError:
             print("Uh oh, there was some division by zero.")
 
@@ -137,6 +168,7 @@ class UserText:
         print(self.pos_word_list)
         print("Negative Words Used:")
         print(self.neg_word_list)
+
 
 ###################################################################
 # 3. MAIN

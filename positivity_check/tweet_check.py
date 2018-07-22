@@ -1,4 +1,4 @@
-#!/usr/bin/python3 
+#!/usr/bin/python3
 ####################
 # Author: Nathan Mador-House
 # Title: Positively Twitter
@@ -21,6 +21,7 @@ import tweepy
 from resources.py_to_file import text_to_file
 from resources.py_to_file import file_to_text
 from positivity_check import UserText
+
 # Put sensitive keys and tokens into authentication.py file
 import resources.authentication as authentication
 
@@ -49,28 +50,32 @@ class Tweeter:
     def __init__(self, user_id):
         self.user_id = user_id
         self.tweets = []
-        self.tweets_filename = user_id + '.txt'
+        self.tweets_filename = user_id + ".txt"
 
     def get_user_tweets(self, amount, loc=None):
         """ Retrieve tweets from the user specified. """
         if loc == None:
             if os.path.isfile(self.tweets_filename):
-                print('Already collected tweets, retrieving from storage.')
+                print("Already collected tweets, retrieving from storage.")
             else:
                 try:
-                    user_tweets = API.user_timeline(self.user_id, None, None, None, None, amount)
+                    user_tweets = API.user_timeline(
+                        self.user_id, None, None, None, None, amount
+                    )
                     for tweet in user_tweets:
-                        self.tweets.append(tweet.text.replace('\n', ' '))
+                        self.tweets.append(tweet.text.replace("\n", " "))
                 except tweepy.error.TweepError as e:
                     print(e)
         else:
             if os.path.isfile(loc + self.tweets_filename):
-                print('Already collected tweets, retrieving from storage.')
+                print("Already collected tweets, retrieving from storage.")
             else:
                 try:
-                    user_tweets = API.user_timeline(self.user_id, None, None, None, None, amount)
+                    user_tweets = API.user_timeline(
+                        self.user_id, None, None, None, None, amount
+                    )
                     for tweet in user_tweets:
-                        self.tweets.append(tweet.text.replace('\n', ' '))
+                        self.tweets.append(tweet.text.replace("\n", " "))
                 except tweepy.error.TweepError as e:
                     print(e)
 
@@ -92,6 +97,7 @@ class Tweeter:
         else:
             self.tweets = file_to_text(loc + self.tweets_filename)
 
+
 def analyze_tweets(tweets):
     """ Use PositivityCheck module to analyze tweets. """
     tweet_text_objects = []
@@ -110,6 +116,7 @@ def get_home_tweets(user):
     public_tweets = API.home_timeline(None, None, 1, None)
     for tweet in public_tweets:
         return tweet.text
+
 
 ###################################################################
 # 1. MAIN
