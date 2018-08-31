@@ -1,4 +1,4 @@
-#%%
+# %%
 
 import pandas as pd
 import collections
@@ -17,6 +17,7 @@ columns = pd.read_csv(office_file, nrows=1).columns
 print(columns)
 data = pd.read_csv(office_file)
 
+
 def count_lines():
     df = pd.DataFrame(data=data, columns=columns)
     char_count = collections.Counter(df['speaker'])
@@ -28,36 +29,44 @@ def count_lines():
     counts["epi_count"] = dict(epi_count)
     return counts
 
+
 def lines_per():
     df = pd.DataFrame(data=data, columns=columns)
-    jim_lines = df[(df['season'] == 1) & (df['episode'] == 1) & (df['speaker'] == 'Jim')]['line_text']
+    jim_lines = df[(df['season'] == 1) & (df['episode'] == 1)
+                   & (df['speaker'] == 'Jim')]['line_text']
     return jim_lines
+
 
 def remove_stage_directions_and_punctuation(text):
     without_directions = re.sub("[\(\[].*?[\)\]]", "", text)
     result = re.sub('[^A-Za-z0-9 ]+', '', without_directions)
     return result
 
+
 # Make Season[Episode][Character] data structure
 main_characters = ["Michael", "Jim", "Pam", "Dwight", "Ryan", "Andy", "Robert"]
-recurring_characters = ["Jan", "Roy", "Stanley", "Kevin", "Meredith", "Angela", "Oscar", "Phyllis", "Kelly", "Toby", "Creed", "Gabe", "Holly", "Nellie", "Clark", "Pete", "Erin"]
-other_characters = ["Todd", "David", "Karen", "Charles", "Jo", "Deangelo", "Val", "Cathy"]
+recurring_characters = ["Jan", "Roy", "Stanley", "Kevin", "Meredith", "Angela", "Oscar",
+                        "Phyllis", "Kelly", "Toby", "Creed", "Gabe", "Holly", "Nellie", "Clark", "Pete", "Erin"]
+other_characters = ["Todd", "David", "Karen",
+                    "Charles", "Jo", "Deangelo", "Val", "Cathy"]
 
 df = pd.DataFrame(data=data, columns=columns)
 
 # seasons = dict.fromkeys(set(data['season']))
-seasons = {1:None}
+seasons = {1: None}
 
 for season in seasons:
-    episodes = df[ (df['season']) == season]
+    episodes = df[(df['season']) == season]
     seasons[season] = dict.fromkeys(set(episodes['episode']))
     for episode in seasons[season]:
         seasons[season][episode] = dict.fromkeys(main_characters)
         for char in seasons[season][episode]:
-            seasons[season][episode][char] = {'total_text': "", 'text_value_counts': []}
-            for line in df[ (df['season'] == season) & (df['episode'] == episode) & (df['speaker'] == char)]['line_text']:
+            seasons[season][episode][char] = {
+                'total_text': "", 'text_value_counts': []}
+            for line in df[(df['season'] == season) & (df['episode'] == episode) & (df['speaker'] == char)]['line_text']:
                 # print(line)
-                seasons[season][episode][char]['total_text'] += " " + remove_stage_directions_and_punctuation(line)
+                seasons[season][episode][char]['total_text'] += " " + \
+                    remove_stage_directions_and_punctuation(line)
 
 analyzed_chars = {}
 for char in seasons[1][1]:
@@ -75,6 +84,7 @@ analyzed_chars['Jim'].print_stats()
 # counts.plot(kind='bar', rot=0)
 
 counts = pd.Series(analyzed_chars['Jim'].word_values_count)
-counts.plot(kind='bar', rot=0, logy=True, figsize=(12, 8), title="Distribution of Positive and Negative Words")
+counts.plot(kind='bar', rot=0, logy=True, figsize=(12, 8),
+            title="Distribution of Positive and Negative Words")
 plt.xlabel('Word Values')
 plt.ylabel('Occurance Rate')
