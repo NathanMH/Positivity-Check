@@ -31,13 +31,41 @@ from positivity_check import UserText
 ###################################################################
 
 main_characters = ["Michael", "Jim", "Pam", "Dwight", "Ryan", "Andy", "Robert"]
-recurring_characters = ["Jan", "Roy", "Stanley", "Kevin", "Meredith", "Angela", "Oscar", "Phyllis", "Kelly", "Toby", "Creed", "Gabe", "Holly", "Nellie", "Clark", "Pete", "Erin"]
-other_characters = ["Todd", "David", "Karen", "Charles", "Jo", "Deangelo", "Val", "Cathy"]
+recurring_characters = [
+    "Jan",
+    "Roy",
+    "Stanley",
+    "Kevin",
+    "Meredith",
+    "Angela",
+    "Oscar",
+    "Phyllis",
+    "Kelly",
+    "Toby",
+    "Creed",
+    "Gabe",
+    "Holly",
+    "Nellie",
+    "Clark",
+    "Pete",
+    "Erin",
+]
+other_characters = [
+    "Todd",
+    "David",
+    "Karen",
+    "Charles",
+    "Jo",
+    "Deangelo",
+    "Val",
+    "Cathy",
+]
 
 characters = {}
 seasons = {}
 episodes = {}
 scenes = {}
+
 
 class Show:
     def __init__(self):
@@ -48,6 +76,7 @@ class Show:
 
     def print_stats(self):
         print(self.total_text)
+
 
 class Character:
     def __init__(self, name):
@@ -68,34 +97,38 @@ class Character:
         else:
             self.episodes[episode] = Episode(episode)
             self.episodes[episode].add_text(line)
- 
+
+
 class Season(Show):
     def __init__(self, season):
         self.season = season
         self.total_text = ""
+
 
 class Episode(Show):
     def __init__(self, episode):
         self.episode = episode
         self.total_text = ""
 
+
 class Scene(Show):
     def __init__(self, scene):
         self.scene = scene
         self.total_text = ""
 
+
 def load_csv(loc):
     # Load csv and add one item to each dictionary so it's not empty
     with open(loc) as csvfile:
         csvfile.readline()
-        reader = csv.reader(csvfile, delimiter=',')
+        reader = csv.reader(csvfile, delimiter=",")
 
         # Setup dictionaries with first row (excluding the column names)
         row1 = next(reader)
         line = remove_stage_directions_and_punctuation(row1[4])
         character = row1[5]
         season = row1[1]
-        epi_season = str(row1[1] + format(int(row1[2]), '02d'))
+        epi_season = str(row1[1] + format(int(row1[2]), "02d"))
 
         # Init dictionaries
         characters[character] = Character(character)
@@ -107,12 +140,13 @@ def load_csv(loc):
 
         analyze_csv(reader)
 
+
 def analyze_csv(reader):
     for row in reader:
         character = row[5]
         season = row[1]
         # epi_season = str(row[1]) + str(row[2])
-        epi_season = str(row[1] + format(int(row[2]), '02d'))
+        epi_season = str(row[1] + format(int(row[2]), "02d"))
         line = remove_stage_directions_and_punctuation(row[4])
 
         # Characters
@@ -138,20 +172,22 @@ def analyze_csv(reader):
         else:
             seasons[season] = Season(season)
             seasons[season].add_text(line)
- 
+
         # Episode
         if epi_season in episodes:
             episodes[epi_season].add_text(line)
         else:
             episodes[epi_season] = Episode(epi_season)
             episodes[epi_season].add_text(line)
-            
+
         # Scene - TODO
+
 
 def remove_stage_directions_and_punctuation(text):
     without_directions = re.sub("[\(\[].*?[\)\]]", "", text)
-    result = re.sub('[^A-Za-z0-9 ]+', '', without_directions)
+    result = re.sub("[^A-Za-z0-9 ]+", "", without_directions)
     return result
+
 
 def graph_seasons():
     seasons_analysis = {}
@@ -160,6 +196,7 @@ def graph_seasons():
         seasons_analysis[seasons[s].season] = sentiment
     make_seasons_graph(seasons_analysis)
 
+
 def graph_episodes():
     episodes_analysis = {}
     for e in episodes:
@@ -167,11 +204,39 @@ def graph_episodes():
         episodes_analysis[episodes[e]] = sentiment
     make_episodes_graph(episodes_analysis)
 
+
 def graph_characters():
     characters_analysis = {}
     main_characters = ["Michael", "Jim", "Pam", "Dwight", "Ryan", "Andy", "Robert"]
-    recurring_characters = ["Jan", "Roy", "Stanley", "Kevin", "Meredith", "Angela", "Oscar", "Phyllis", "Kelly", "Toby", "Creed", "Gabe", "Holly", "Nellie", "Clark", "Pete", "Erin"]
-    other_characters = ["Todd", "David", "Karen", "Charles", "Jo", "Deangelo", "Val", "Cathy"]
+    recurring_characters = [
+        "Jan",
+        "Roy",
+        "Stanley",
+        "Kevin",
+        "Meredith",
+        "Angela",
+        "Oscar",
+        "Phyllis",
+        "Kelly",
+        "Toby",
+        "Creed",
+        "Gabe",
+        "Holly",
+        "Nellie",
+        "Clark",
+        "Pete",
+        "Erin",
+    ]
+    other_characters = [
+        "Todd",
+        "David",
+        "Karen",
+        "Charles",
+        "Jo",
+        "Deangelo",
+        "Val",
+        "Cathy",
+    ]
 
     for c in main_characters:
         sentiment = UserText(characters[c].total_text)
@@ -187,13 +252,19 @@ if __name__ == "__main__":
 
     text = input("Test or Real: ").lower()
     if text == "real" or text == "r":
-        office_file = os.getcwd() + "\\positivity_check\\resources\\the-office-lines-scripts.csv"
+        office_file = (
+            os.getcwd() + "\\positivity_check\\resources\\the-office-lines-scripts.csv"
+        )
     else:
-        office_file = os.getcwd() + "\\positivity_check\\test\\the-office-lines-scripts-test.csv"
-    
+        office_file = (
+            os.getcwd() + "\\positivity_check\\test\\the-office-lines-scripts-test.csv"
+        )
+
     load_csv(office_file)
 
-    graph = input("What variable would you like to graph? Characters, Seasons, or Episodes: ").lower()
+    graph = input(
+        "What variable would you like to graph? Characters, Seasons, or Episodes: "
+    ).lower()
 
     if graph == "characters" or graph == "c":
         graph_characters()
@@ -204,13 +275,10 @@ if __name__ == "__main__":
     else:
         print("Sorry, didn't catch that.")
 
-
-
     # most_positive = max(sentiments.items(), key=operator.itemgetter(1))[0]
     # most_negative = min(sentiments.items(), key=operator.itemgetter(1))[0]
     # print("Most Positive = " + most_positive + " : " + str(sentiments[most_positive]))
     # print("Most Negative = " + most_negative + " : " + str(sentiments[most_negative]))
-
 
     # Episodes
     # for e in episodes:

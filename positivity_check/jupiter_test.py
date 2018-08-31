@@ -7,12 +7,15 @@ import os
 import sys
 import pprint
 import re
-module_path = os.path.abspath(os.path.join('..'))
+
+module_path = os.path.abspath(os.path.join(".."))
 if module_path not in sys.path:
     sys.path.append(module_path)
 from positivity_check.positivity_check import UserText
 
-office_file = os.getcwd() + "\\positivity_check\\resources\\the-office-lines-scripts.csv"
+office_file = (
+    os.getcwd() + "\\positivity_check\\resources\\the-office-lines-scripts.csv"
+)
 columns = pd.read_csv(office_file, nrows=1).columns
 print(columns)
 data = pd.read_csv(office_file)
@@ -20,9 +23,9 @@ data = pd.read_csv(office_file)
 
 def count_lines():
     df = pd.DataFrame(data=data, columns=columns)
-    char_count = collections.Counter(df['speaker'])
-    epi_count = collections.Counter(df['episode'])
-    season_count = collections.Counter(df['season'])
+    char_count = collections.Counter(df["speaker"])
+    epi_count = collections.Counter(df["episode"])
+    season_count = collections.Counter(df["season"])
     counts = {}
     counts["char_count"] = collections.OrderedDict(char_count.most_common(10))
     counts["season_count"] = dict(season_count)
@@ -39,7 +42,7 @@ def lines_per():
 
 def remove_stage_directions_and_punctuation(text):
     without_directions = re.sub("[\(\[].*?[\)\]]", "", text)
-    result = re.sub('[^A-Za-z0-9 ]+', '', without_directions)
+    result = re.sub("[^A-Za-z0-9 ]+", "", without_directions)
     return result
 
 
@@ -70,11 +73,11 @@ for season in seasons:
 
 analyzed_chars = {}
 for char in seasons[1][1]:
-    analyzed_chars[char] = UserText(seasons[1][1][char]['total_text'])
+    analyzed_chars[char] = UserText(seasons[1][1][char]["total_text"])
 
 # pprint.pprint(seasons[1][1]['Jim']['total_text'])
 # analyzed_text = UserText(seasons[1][1]['Jim']['total_text'])
-analyzed_chars['Jim'].print_stats()
+analyzed_chars["Jim"].print_stats()
 
 # Line counting, season counting results
 # counts = count_lines()
